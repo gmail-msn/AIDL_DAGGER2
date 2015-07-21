@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnGetBalance"
+            android:layout_width="@dimen/button_width_height"
+            android:layout_height="@dimen/button_width_height"
+            android:text="@string/btn_msg_get_balance"/>
+        <Button
+            android:id="@+id/btnSuperTransfer"
+            android:layout_width="@dimen/button_width_height"
+            android:layout_height="@dimen/button_width_height"
+            android:layout_marginLeft="30dp"
+            android:text="@string/btn_msg_transfer"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/commonTextView"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

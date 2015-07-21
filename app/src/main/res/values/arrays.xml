@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="smartpos_interfaces">
+        <item>现金交易</item>
+        <item>交易列表</item>
+        <item>报表统计</item>
+        <item>商户信息</item>
+        <item>支付渠道</item>
+    </string-array>
+</resources>
