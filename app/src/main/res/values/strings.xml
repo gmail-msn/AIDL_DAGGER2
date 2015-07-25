@@ -22,5 +22,13 @@
     <string name="msg_warning_swipe_card_error">刷卡错误，请重新刷卡</string>
     <string name="msg_transaction_cancelled">交易已取消</string>
     <string name="msg_input_password">请输入密码</string>
+    <string name="msg_swipe_card_error_retry">刷卡错误，请重新刷卡</string>
 
+    <string name="ic_status_insert_warning_3">IC卡已拔出！</string>
+    <string name="ic_status_insert_warning_4">请输入密码</string>
+    <string name="ic_status_insert_warning_7">交易处理中，请勿拔卡...</string>
+    <string name="ic_status_insert_warning_9">交易拒绝！</string>
+    <string name="ic_status_insert_warning_10">交易中止,请拔卡！</string>
+    <string name="ic_status_insert_warning_12">不允许服务，交易中止，请取卡！</string>
+    <string name="msg_insert_ic_card_go_on_transaction">请插入IC卡后，继续交易</string>
 </resources>

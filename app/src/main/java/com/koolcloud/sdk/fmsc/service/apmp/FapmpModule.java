@@ -21,8 +21,7 @@
 package com.koolcloud.sdk.fmsc.service.apmp;
 
 
-import com.koolcloud.sdk.fmsc.interactors.DevicesInteractor;
-import com.koolcloud.sdk.fmsc.interactors.FapmpInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.FapmpInteractor;
 
 import dagger.Module;
 import dagger.Provides;

@@ -17,7 +17,7 @@ public class PreferenceUtil {
 	}
 
 	// save terminal id
-	public static void saveTerminaID(Context context, String terminalID) {
+	public static void saveTerminalID(Context context, String terminalID) {
 		SharedPreferences prefer = context.getSharedPreferences(PREFS_NAME,Context.MODE_MULTI_PROCESS);
 		prefer.edit().putString(TERMINAL_ID, terminalID).commit();
 	}

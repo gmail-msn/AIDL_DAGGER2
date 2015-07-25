@@ -24,4 +24,5 @@ import org.json.JSONObject;
 
 public interface IFapmpServiceView {
     void onLoginCallBack(JSONObject loginResult);
+    void onDownloadPaymentParamsCallBack(JSONObject paymentsObj);
 }

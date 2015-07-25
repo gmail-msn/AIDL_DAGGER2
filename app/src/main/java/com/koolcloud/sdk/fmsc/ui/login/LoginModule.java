@@ -23,7 +23,7 @@ package com.koolcloud.sdk.fmsc.ui.login;
 
 import android.util.Log;
 
-import com.koolcloud.sdk.fmsc.interactors.LoginInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
 
 import dagger.Module;
 import dagger.Provides;

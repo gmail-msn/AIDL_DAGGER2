@@ -26,8 +26,6 @@ import org.json.JSONObject;
 
 public interface DevicePresenter {
 
-    public void showMessage(String message);
-
     public void onStartSwiper(Context context);
 
     public void onStopSwipter();
@@ -37,5 +35,7 @@ public interface DevicePresenter {
     public void onStopReadICData();
 
     public void onStartPinPad(Context ctx, JSONObject jsonObject);
+
+    public void onStartTransaction(Context context, JSONObject transJsonObj);
 
 }

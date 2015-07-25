@@ -5,13 +5,19 @@ package com.koolcloud.sdk.fmsc.service.device;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.koolcloud.sdk.fmsc.interactors.DevicesInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 
 import org.json.JSONObject;
 
 import java.util.Hashtable;
 
+import javax.inject.Inject;
+
 public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListener {
+
+    @Inject
+    TransactionInteractor mTransactionInteractor;
 
     private IDeviceServiceView deviceServiceView;
     private DevicesInteractor devicesInteractor;
@@ -19,11 +25,6 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     public DevicePresenterImpl(IDeviceServiceView deviceServiceView, DevicesInteractor devicesInteractor) {
         this.deviceServiceView = deviceServiceView;
         this.devicesInteractor = devicesInteractor;
-    }
-
-    @Override
-    public void showMessage(String message) {
-        deviceServiceView.showMessageInTextView(message);
     }
 
     @Override
@@ -52,6 +53,11 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     }
 
     @Override
+    public void onStartTransaction(Context ctx, JSONObject jsonObject) {
+        mTransactionInteractor.onStartTransaction(ctx, jsonObject, this);
+    }
+
+    @Override
     public void onFinishTransaction(JSONObject jsonObject) {
         deviceServiceView.onFinishTransaction(jsonObject);
     }
@@ -69,6 +75,11 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     @Override
     public void onReceiveICData(JSONObject transICData) {
         deviceServiceView.onReceiveICData(transICData);
+    }
+
+    @Override
+    public void onReceiveICDataError(JSONObject transICData) {
+        deviceServiceView.onReceiveICDataError(transICData);
     }
 
     @Override

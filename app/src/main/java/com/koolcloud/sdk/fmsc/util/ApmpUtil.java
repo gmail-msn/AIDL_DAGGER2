@@ -1,7 +1,10 @@
 package com.koolcloud.sdk.fmsc.util;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.TextureView;
 
+import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolyun.smartpos.sdk.service.ApmpService;
 import com.koolyun.smartpos.sdk.service.POSPTransactionService;
 
@@ -25,5 +28,13 @@ public class ApmpUtil {
         }
         POSPTransactionService service = POSPTransactionService.getInstance(context, mApmpService, merchId, termId, keyIndex);
         return service;
+    }
+
+    public static String getActionByTransType(String transType) {
+        String action = "";
+        if (!TextUtils.isEmpty(transType) &&transType.equals(Constant.APMP_TRAN_BALANCE)) {
+            action = "Balance";
+        }
+        return action;
     }
 }

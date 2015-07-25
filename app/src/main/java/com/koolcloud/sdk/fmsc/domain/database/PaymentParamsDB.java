@@ -214,7 +214,7 @@ public class PaymentParamsDB extends BaseSqlAdapter {
      * <p>Copyright: Copyright (c) 2014</p>
      * <p>Company: KoolCloud</p>
      * @author 		Teddy
-     * @date 		2014-7-11
+     * @date 		2015-7-11
      * @version 	
      */
     class CacheHelper extends SQLiteOpenHelper {

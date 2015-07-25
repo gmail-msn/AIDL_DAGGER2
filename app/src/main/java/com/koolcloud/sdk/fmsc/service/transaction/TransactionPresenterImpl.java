@@ -4,7 +4,7 @@ package com.koolcloud.sdk.fmsc.service.transaction;
 
 import android.content.Context;
 
-import com.koolcloud.sdk.fmsc.interactors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 
 import org.json.JSONObject;
 

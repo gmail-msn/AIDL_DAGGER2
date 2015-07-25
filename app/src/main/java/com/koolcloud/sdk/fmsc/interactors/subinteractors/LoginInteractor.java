@@ -18,14 +18,13 @@
  *
  */
 
-package com.koolcloud.sdk.fmsc.interactors;
+package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 
 
 import android.content.Context;
 
-import com.koolcloud.sdk.fmsc.service.apmp.OnApmpCallBackListener;
 import com.koolcloud.sdk.fmsc.ui.login.OnLoginFinishedListener;
 
-public interface FapmpInteractor {
-    public void loginApmp(Context ctx, String merchId, String username, String password, OnApmpCallBackListener listener);
+public interface LoginInteractor {
+    public void login(Context ctx, String merchId, String username, String password, OnLoginFinishedListener listener);
 }

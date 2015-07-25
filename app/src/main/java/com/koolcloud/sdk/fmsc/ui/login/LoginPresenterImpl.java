@@ -24,7 +24,7 @@ package com.koolcloud.sdk.fmsc.ui.login;
 import android.content.Context;
 import android.util.Log;
 
-import com.koolcloud.sdk.fmsc.interactors.LoginInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
 
 public class LoginPresenterImpl implements LoginPresenter, OnLoginFinishedListener {
 

@@ -18,7 +18,7 @@
  *
  */
 
-package com.koolcloud.sdk.fmsc.interactors;
+package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 
 import android.content.Context;
 import android.os.Handler;
@@ -108,7 +108,7 @@ public class LoginInteractorImpl implements LoginInteractor {
                 int responseCode = loginResult.optInt("responseCode");
                 if (responseCode == 0) {
                     //TODO:save merchant ID and terminal ID
-                    PreferenceUtil.saveTerminaID(ctx, loginResult.optString("iposId"));
+                    PreferenceUtil.saveTerminalID(ctx, loginResult.optString("iposId"));
                     PreferenceUtil.saveMerchID(ctx, merchId);
 
                     //TODO:download payment params and then save to local

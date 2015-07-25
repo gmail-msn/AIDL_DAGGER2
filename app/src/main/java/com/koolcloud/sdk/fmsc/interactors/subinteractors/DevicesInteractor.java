@@ -1,4 +1,4 @@
-package com.koolcloud.sdk.fmsc.interactors;
+package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,6 @@ public interface DevicesInteractor {
 
     public void onStartSwiper(Context context, OnReceiveTrackListener listener);
     public void onStopSwiper();
-
     public void onStartReadICData(Context context, String keyIndex, String transAmountIC, OnReceiveTrackListener listener);
     public void onStopReadICData();
     public void onStartPinPad(JSONObject jsonObject, OnReceiveTrackListener listener);

@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.AppComponent;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 import com.koolcloud.sdk.fmsc.service.BaseService;
 import com.koolcloud.sdk.fmsc.service.IApmpCallBack;
 import com.koolcloud.sdk.fmsc.service.IApmpInterface;
@@ -79,6 +80,12 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
         }
 
         @Override
+        public void downloadPaymentParams(String merchId, IApmpCallBack apmpCallBack) throws RemoteException {
+            mIApmpCallBack = apmpCallBack;
+            mFapmpPresenter.downloadPaymentParams(context, merchId);
+        }
+
+        @Override
         public boolean onTransact(int code, Parcel data, android.os.Parcel reply, int flags) throws RemoteException {
             try {
                 return super.onTransact(code, data, reply, flags);
@@ -98,6 +105,15 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
     public void onLoginCallBack(JSONObject loginResult) {
         try {
             mIApmpCallBack.loginApmpCallBack(loginResult.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDownloadPaymentParamsCallBack(JSONObject paymentsObj) {
+        try {
+            mIApmpCallBack.onDownloadPaymentParamsCallBack(paymentsObj.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

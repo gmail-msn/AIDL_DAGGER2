@@ -18,11 +18,10 @@
  *
  */
 
-package com.koolcloud.sdk.fmsc.interactors;
+package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.domain.database.PaymentParamsDB;
@@ -32,7 +31,6 @@ import com.koolcloud.sdk.fmsc.util.ApmpUtil;
 import com.koolcloud.sdk.fmsc.util.JsonUtil;
 import com.koolcloud.sdk.fmsc.util.PreferenceUtil;
 import com.koolyun.smartpos.sdk.service.ApmpService;
-import com.koolyun.smartpos.sdk.service.POSPTransactionService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,7 +53,37 @@ public class FapmpInteractorImpl implements FapmpInteractor {
 
         ApmpService apmpService = ApmpUtil.getApmpInstance(ctx);
         JSONObject loginResult = apmpService.login(username, password, merchId, android.os.Build.SERIAL);
+        String terminalId = loginResult.optString("iposId");
+        if (!TextUtils.isEmpty(terminalId)) {
+            PreferenceUtil.saveMerchID(ctx, merchId);
+            PreferenceUtil.saveTerminalID(ctx, terminalId);
+        }
+
         mListener.onLoginCallBack(loginResult);
+    }
+
+    @Override
+    public void downloadPaymentParams(Context ctx, String merchId, OnApmpCallBackListener listener) {
+        this.ctx = ctx;
+        this.mListener = listener;
+        ApmpService apmpService = ApmpUtil.getApmpInstance(ctx);
+
+        //TODO:download payment params and then save to local
+        JSONObject paramsObj = apmpService.getPaymentList(merchId);
+        PaymentParamsDB paymentParamsDB = PaymentParamsDB.getInstance(ctx);
+        JSONArray jsonArray = paramsObj.optJSONArray("prdtList");
+
+        //clear cached payment table
+        paymentParamsDB.clearPaymentParamsTableData();
+        if (jsonArray != null) {
+            List<PaymentInfo> acquireJsonList = JsonUtil.parseJsonArray2AcquireInstitute(jsonArray);
+            if (acquireJsonList != null && acquireJsonList.size() > 0) {
+                paymentParamsDB.insertPayment(acquireJsonList);
+            }
+        }
+
+        mListener.onDownloadPaymentParamsCallBack(paramsObj);
+
     }
 
 }

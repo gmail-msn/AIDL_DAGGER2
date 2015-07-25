@@ -1,17 +1,18 @@
-package com.koolcloud.sdk.fmsc.interactors;
+package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.domain.Constant;
+import com.koolcloud.sdk.fmsc.service.device.OnReceiveTrackListener;
 import com.koolcloud.sdk.fmsc.service.transaction.OnReceiveTransactionListener;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
+import com.koolcloud.sdk.fmsc.util.JsonUtil;
 import com.koolcloud.sdk.fmsc.util.PreferenceUtil;
 import com.koolyun.smartpos.sdk.service.ApmpService;
 import com.koolyun.smartpos.sdk.service.POSPTransactionService;
 import com.koolyun.smartpos.sdk.util.MessageUtil;
-import com.koolyun.smartpos.sdk.util.UtilForDataStorage;
 
 import org.json.JSONObject;
 
@@ -25,13 +26,13 @@ public class TransactionInteractorImpl implements TransactionInteractor{
     private static final int RECEIVE_TRACK_DATA = 0;
     private static final int RECEIVE_TRACK_DATA_ERROR = 1;
     private OnReceiveTransactionListener receiveTransactionListener;
+    private OnReceiveTrackListener mReceiveTrackListener;
     private Context context;
 
     @Override
     public void signInPosp(Context ctx, String paymentId, String keyIndex, OnReceiveTransactionListener receiveTransactionListener) {
-        JSONObject merchObj = MessageUtil.getMerchDataFromPreference(ctx);
-        String merchId = merchObj.optString("merchId");
-        String tId = merchObj.optString("tID");
+        String merchId = PreferenceUtil.getMerchID(ctx);
+        String tId = PreferenceUtil.getTerminalID(ctx);
 
         Log.e(TAG, "merchId:" + merchId);
         Log.e(TAG, "termId:" + tId);
@@ -39,8 +40,19 @@ public class TransactionInteractorImpl implements TransactionInteractor{
         POSPTransactionService pospTransactionService = ApmpUtil.getTransactionService(ctx, merchId, tId, keyIndex);
         JSONObject signInObj = pospTransactionService.signIn(paymentId);
         receiveTransactionListener.onReceiveSignInResult(signInObj);
+
+//        Log.e(TAG, "from transaction interactor");
     }
 
+    @Override
+    public void onStartTransaction(Context ctx, JSONObject jsonObject, OnReceiveTrackListener receiveTransactionListener) {
+        receiveTransactionListener = null;
+        mReceiveTrackListener = receiveTransactionListener;
+        this.context = ctx;
+
+        JSONObject transObj = JsonUtil.makeTransactionParams(ctx, jsonObject);
+        new ExecuteTransactionThread(transObj).start();
+    }
 
     class ExecuteTransactionThread extends Thread {
         JSONObject transObj;
@@ -50,14 +62,11 @@ public class TransactionInteractorImpl implements TransactionInteractor{
 
         @Override
         public void run() {
-            ApmpService apmpService = ApmpService.getInstance(null);
-            apmpService.setClientType(ApmpService.POS_TYPE_SMART);
-            apmpService.setEnvironmentMode(ApmpService.ENV_PRODUCT);
-            apmpService.setAndroidBuildSerial(android.os.Build.SERIAL);
             String merchId = PreferenceUtil.getMerchID(context);
             String termId = PreferenceUtil.getTerminalID(context);
 
-            POSPTransactionService service = POSPTransactionService.getInstance(context, apmpService, merchId, termId, transObj.optString("brhKeyIndex"));
+            POSPTransactionService service = ApmpUtil.getTransactionService(context, merchId, termId, transObj.optString("brhKeyIndex"));
+
             JSONObject transResultObj = null;
 
             String transType = transObj.optString("transType");
@@ -69,10 +78,9 @@ public class TransactionInteractorImpl implements TransactionInteractor{
                 transResultObj = service.startConsumption(transObj);
             }
 
-//            Message msg = mTransactionHandler.obtainMessage();
-//            msg.obj = transResultObj;
-//            msg.what = FINISH_TRANSACTION_HANDLER;
-//            mTransactionHandler.sendMessage(msg);
+            if (mReceiveTrackListener != null) {
+                mReceiveTrackListener.onFinishTransaction(transResultObj);
+            }
 
         }
     }

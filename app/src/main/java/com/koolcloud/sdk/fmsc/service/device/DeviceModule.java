@@ -21,8 +21,7 @@
 package com.koolcloud.sdk.fmsc.service.device;
 
 
-import com.koolcloud.sdk.fmsc.interactors.DevicesInteractor;
-import com.koolcloud.sdk.fmsc.interactors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
 
 import dagger.Module;
 import dagger.Provides;

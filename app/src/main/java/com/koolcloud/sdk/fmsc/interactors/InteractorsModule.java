@@ -22,6 +22,15 @@ package com.koolcloud.sdk.fmsc.interactors;
 
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractorImpl;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.FapmpInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.FapmpInteractorImpl;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractorImpl;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractorImpl;
+
 import dagger.Module;
 import dagger.Provides;
 

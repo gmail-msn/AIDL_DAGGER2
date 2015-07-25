@@ -21,7 +21,7 @@
 package com.koolcloud.sdk.fmsc.service.transaction;
 
 
-import com.koolcloud.sdk.fmsc.interactors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 
 import dagger.Module;
 import dagger.Provides;

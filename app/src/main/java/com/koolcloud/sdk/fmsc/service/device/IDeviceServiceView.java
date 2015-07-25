@@ -28,13 +28,13 @@ import java.util.Hashtable;
 
 public interface IDeviceServiceView {
 
-    public void showMessageInTextView(String message);
-
     public void receiveTrackData(Hashtable<String, String> trackData);
 
     public void receiveTrackDataError(int resCode, int trackIndex);
 
     public void onReceiveICData(JSONObject transICData);
+
+    public void onReceiveICDataError(JSONObject transICData);
 
     public void onReceivePinpadData(Bundle pinpadData);
 
