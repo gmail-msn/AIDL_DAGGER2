@@ -5,7 +5,7 @@ import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
 
 interface IDevicesInterface {
     /**
-     * String keyIndex: pay key index for pinpad
+     * String paymentId: payment number
      * String transAmount: transaction amount unit yuan (eg:1.00), it is null on Balance Query
      * int transType:
      *      1041 -- Balance Query
@@ -18,6 +18,6 @@ interface IDevicesInterface {
      * IDevicesCallBack devicesCallBack: devices response call back
      * ITransactionCallBack transactionCallBack: transaction call back
      **/
-    void onStartSwipeCard(String keyIndex, String transAmount, String transType, String cardId, String toAccount, IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack);
+    void onStartSwipeCard(String paymentId, String transAmount, String transType, String cardId, String toAccount, IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack);
     void onStopSwipeCard();
 }

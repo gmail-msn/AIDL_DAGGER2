@@ -17,9 +17,10 @@ import com.koolcloud.sdk.fmsc.service.BaseService;
 import com.koolcloud.sdk.fmsc.service.IDevicesCallBack;
 import com.koolcloud.sdk.fmsc.service.IDevicesInterface;
 import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
-import com.koolcloud.sdk.fmsc.service.transaction.TransactionPresenter;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
+import com.koolyun.smartpos.sdk.message.parameter.UtilFor8583;
+import com.koolyun.smartpos.sdk.util.ConstantUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,9 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     @Inject
     DevicePresenter mDevicePresenter;
 
+    @Inject
+    TransactionInteractor mTransactionInteractor;
+
     private IDevicesCallBack mDevicesCallBack;
     private ITransactionCallBack mTransactionCallBack;
     private Context context;
@@ -45,7 +49,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     private String mPaymentId;
     private String mBrhKeyIndex;
     private String mOpenBrh;
-    private String mCardId;
+    private String mIdCard;
     private String mToAccount;
 
     private JSONObject transJsonObj = null;
@@ -124,7 +128,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 transJsonObj.put("paymentId", mPaymentId);
                 transJsonObj.put("brhKeyIndex", mBrhKeyIndex);
                 transJsonObj.put("openBrh", mOpenBrh);
-                transJsonObj.put("idCard", mCardId);
+                transJsonObj.put("idCard", mIdCard);
                 transJsonObj.put("toAccount", mToAccount);
 
                 mDevicePresenter.onStartPinPad(context, jsonObject);
@@ -162,11 +166,11 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             transJsonObj.put("paymentId", mPaymentId);
             transJsonObj.put("brhKeyIndex", mBrhKeyIndex);
             transJsonObj.put("openBrh", mOpenBrh);
-            transJsonObj.put("idCard", mCardId);
+            transJsonObj.put("idCard", mIdCard);
             transJsonObj.put("toAccount", mToAccount);
 
             //TODO: go transaction work flow.
-            mDevicePresenter.onStartTransaction(context, transJsonObj);
+            mDevicePresenter.onStartTransaction(context, transJsonObj, mTransactionInteractor);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -204,8 +208,9 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 e.printStackTrace();
             }
 
+            UtilFor8583.getInstance().trans.setEntryMode(ConstantUtils.ENTRY_SWIPER_MODE);
             //TODO:start transaction
-            mDevicePresenter.onStartTransaction(context, transJsonObj);
+            mDevicePresenter.onStartTransaction(context, transJsonObj, mTransactionInteractor);
         }
 
     }
@@ -214,6 +219,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     public void onFinishTransaction(JSONObject jsonObject) {
         Log.w(TAG, "trans result:" + jsonObject.toString());
         try {
+            clearParams();
             mTransactionCallBack.onTransactionCallBack(jsonObject.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -232,17 +238,30 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             mTransType = transType;
             mTransAmount = transAmount;
             mPaymentId = paymentId;
-            mCardId = cardId;
+            mIdCard = cardId;
             mToAccount = toAccount;
 
             PaymentParamsDB paymentDB = PaymentParamsDB.getInstance(context);
             PaymentInfo paymentInfo = paymentDB.getPaymentByPaymentId(paymentId);
-            mBrhKeyIndex = paymentInfo.getBrhKeyIndex();
-            mOpenBrh = paymentInfo.getOpenBrh();
 
-            onStopSwipeCard();
-            mDevicePresenter.onStartSwiper(context);
-            mDevicePresenter.onStartReadICData(context, paymentId, transAmount);
+            if (null == paymentInfo) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_payment_no_exist));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
+                return;
+            } else {
+
+                mBrhKeyIndex = paymentInfo.getBrhKeyIndex();
+                mOpenBrh = paymentInfo.getOpenBrh();
+
+                onStopSwipeCard();
+                mDevicePresenter.onStartSwiper(context);
+                mDevicePresenter.onStartReadICData(context, paymentId, transAmount);
+            }
         }
 
         @Override
@@ -251,6 +270,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             mDevicePresenter.onStopReadICData();
 
             //TODO: clear all the params.
+//            clearParams();
         }
 
         @Override
@@ -263,4 +283,16 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             }
         }
     };
+
+    private void clearParams() {
+        mTransType = null;
+        mTransAmount = null;
+        mPaymentId = null;
+        mBrhKeyIndex = null;
+        mOpenBrh = null;
+        mIdCard = null;
+        mToAccount = null;
+
+        transJsonObj = null;
+    }
 }

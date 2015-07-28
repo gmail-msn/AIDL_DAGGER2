@@ -32,7 +32,7 @@ public class CardSwiper {
 		}
 	}
 
-    Handler mHandler = new Handler() {
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             int ret = msg.arg1;

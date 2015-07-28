@@ -12,5 +12,5 @@ import org.json.JSONObject;
  */
 public interface TransactionInteractor {
     public void signInPosp(Context ctx, String paymentId, String keyIndex, OnReceiveTransactionListener receiveTransactionListener);
-    public void onStartTransaction(Context ctx, JSONObject jsonObject, OnReceiveTrackListener receiveTransactionListener);
+    public void onStartTransaction(Context ctx, JSONObject jsonObject, OnReceiveTrackListener receiveTrackListener);
 }

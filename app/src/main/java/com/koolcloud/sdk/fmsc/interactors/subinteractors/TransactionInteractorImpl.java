@@ -45,9 +45,8 @@ public class TransactionInteractorImpl implements TransactionInteractor{
     }
 
     @Override
-    public void onStartTransaction(Context ctx, JSONObject jsonObject, OnReceiveTrackListener receiveTransactionListener) {
-        receiveTransactionListener = null;
-        mReceiveTrackListener = receiveTransactionListener;
+    public void onStartTransaction(Context ctx, JSONObject jsonObject, OnReceiveTrackListener receiveTrackListener) {
+        mReceiveTrackListener = receiveTrackListener;
         this.context = ctx;
 
         JSONObject transObj = JsonUtil.makeTransactionParams(ctx, jsonObject);
@@ -70,6 +69,7 @@ public class TransactionInteractorImpl implements TransactionInteractor{
             JSONObject transResultObj = null;
 
             String transType = transObj.optString("transType");
+            Log.w(TAG, "transaction interactor transType:" + transType);
             if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_BALANCE)) {
                 transResultObj = service.startGetBalance(transObj);
             } else if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_SUPER_TRANSFER)) {
@@ -78,9 +78,11 @@ public class TransactionInteractorImpl implements TransactionInteractor{
                 transResultObj = service.startConsumption(transObj);
             }
 
-            if (mReceiveTrackListener != null) {
+            Log.w(TAG, "transaction interactor transResultObj:" + transResultObj.toString());
+//            if (mReceiveTrackListener != null) {
+//                Log.w(TAG, "ooa");
                 mReceiveTrackListener.onFinishTransaction(transResultObj);
-            }
+//            }
 
         }
     }

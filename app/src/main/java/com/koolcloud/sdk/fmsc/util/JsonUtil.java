@@ -1,6 +1,7 @@
 package com.koolcloud.sdk.fmsc.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.koolcloud.sdk.fmsc.domain.entity.PaymentInfo;
 import com.koolyun.smartpos.sdk.util.UtilForMoney;
@@ -94,12 +95,18 @@ public class JsonUtil {
             transJsonObj.put("F52", paramsObj.optString("pinblock"));
             transJsonObj.put("transType", paramsObj.optString("transType"));
             transJsonObj.put("brhKeyIndex", paramsObj.optString("brhKeyIndex"));
-            transJsonObj.put("F04", UtilForMoney.yuan2fen(paramsObj.optString("transAmount")));
-            transJsonObj.put("transAmount", UtilForMoney.yuan2fen(paramsObj.optString("transAmount")));
+            String transAmount = paramsObj.optString("transAmount");
+            if (!TextUtils.isEmpty(transAmount)) {
+                transJsonObj.put("F04", UtilForMoney.yuan2fen(transAmount));
+                transJsonObj.put("transAmount", UtilForMoney.yuan2fen(transAmount));
+            } else {
+                transJsonObj.put("F04", "0");
+                transJsonObj.put("transAmount", "0");
+            }
             transJsonObj.put("F62", paramsObj.optString("toAccount"));
             transJsonObj.put("F60.6", paramsObj.optString("paymentId"));
-            transJsonObj.put("F61", paramsObj.optString("cardId"));
-            transJsonObj.put("idCard", paramsObj.optString("cardId"));
+            transJsonObj.put("F61", paramsObj.optString("idCard"));
+            transJsonObj.put("idCard", paramsObj.optString("idCard"));
             transJsonObj.put("openBrh", paramsObj.optString("openBrh"));
             transJsonObj.put("F40_6F20", paramsObj.optString("openBrh"));
             transJsonObj.put("iposId", terminalId);

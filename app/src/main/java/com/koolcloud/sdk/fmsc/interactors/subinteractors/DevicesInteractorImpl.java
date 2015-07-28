@@ -3,8 +3,11 @@ package com.koolcloud.sdk.fmsc.interactors.subinteractors;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolcloud.sdk.fmsc.domain.devices.CardSwiper;
@@ -26,6 +29,7 @@ import java.util.Map;
  * Created by admin on 2015/5/14.
  */
 public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.CardSwiperListener {
+    private final String TAG = "DevicesInteractorImpl";
     private final int FINISH_TRANSACTION_HANDLER = 1;
     private CardSwiper ex_cardSwiper;
     private EMVICManager emvManager = null;
@@ -33,6 +37,8 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
     private static final int RECEIVE_TRACK_DATA = 0;
     private static final int RECEIVE_TRACK_DATA_ERROR = 1;
     private Context context;
+    private ICCardDataHandler mICDataHandler;
+    private Looper waitDataLooper;
 
     @Override
     public void onStartSwiper(Context context, OnReceiveTrackListener listener) {
@@ -74,14 +80,22 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
     @Override
     public void onStartReadICData(Context context, String keyIndex, String transAmountIC, OnReceiveTrackListener listener) {
 
+//        Looper.prepare();
+        if (waitDataLooper == null) {
+            HandlerThread waitDataThread = new HandlerThread("waitICData");
+            waitDataThread.start();
+            waitDataLooper = waitDataThread.getLooper();
+        }
+
         if (emvManager == null) {
             emvManager = EMVICManager.getEMVICManagerInstance();
             emvManager.setTransAmount(transAmountIC);
-            ICCardDataHandler mICDataHandler = new ICCardDataHandler(context, listener,emvManager);
+            mICDataHandler = new ICCardDataHandler(context, listener, emvManager, waitDataLooper);
             emvManager.onCreate(context, keyIndex, mICDataHandler);
         }
         this.mListener = listener;
         emvManager.onStart();
+//        Looper.loop();
     }
 
     @Override
@@ -90,6 +104,7 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
             emvManager.onPause();
             emvManager = null;
         }
+
     }
 
     @Override

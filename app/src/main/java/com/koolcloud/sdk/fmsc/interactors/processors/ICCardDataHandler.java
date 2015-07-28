@@ -2,6 +2,7 @@ package com.koolcloud.sdk.fmsc.interactors.processors;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.koolcloud.sdk.fmsc.R;
@@ -26,7 +27,8 @@ public class ICCardDataHandler extends Handler {
     private OnReceiveTrackListener mListener;
     private EMVICManager emvManager;
 
-    public ICCardDataHandler(Context ctx, OnReceiveTrackListener listener, EMVICManager emvManager) {
+    public ICCardDataHandler(Context ctx, OnReceiveTrackListener listener, EMVICManager emvManager, Looper waitDataLooper) {
+        super(waitDataLooper);
         this.context = ctx;
         this.mListener = listener;
         this.emvManager = emvManager;
@@ -107,7 +109,6 @@ public class ICCardDataHandler extends Handler {
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
-//                onStopReadICData();
                 break;
             }
             case EMVICManager.TRADE_STATUS_ABORT: {
@@ -120,7 +121,6 @@ public class ICCardDataHandler extends Handler {
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
-//                onStopReadICData();
                 break;
             }
             case EMVICManager.TRADE_STATUS_APPROVED:
@@ -135,7 +135,6 @@ public class ICCardDataHandler extends Handler {
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
-//                onStopReadICData();
                 break;
             }
             case EMVICManager.TRADE_STATUS_ONLINE:

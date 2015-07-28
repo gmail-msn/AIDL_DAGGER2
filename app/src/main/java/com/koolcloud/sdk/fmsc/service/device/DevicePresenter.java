@@ -22,6 +22,8 @@ package com.koolcloud.sdk.fmsc.service.device;
 
 import android.content.Context;
 
+import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
+
 import org.json.JSONObject;
 
 public interface DevicePresenter {
@@ -36,6 +38,6 @@ public interface DevicePresenter {
 
     public void onStartPinPad(Context ctx, JSONObject jsonObject);
 
-    public void onStartTransaction(Context context, JSONObject transJsonObj);
+    public void onStartTransaction(Context context, JSONObject transJsonObj, TransactionInteractor mTransactionInteractor);
 
 }

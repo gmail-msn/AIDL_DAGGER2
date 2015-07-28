@@ -31,4 +31,5 @@
     <string name="ic_status_insert_warning_10">交易中止,请拔卡！</string>
     <string name="ic_status_insert_warning_12">不允许服务，交易中止，请取卡！</string>
     <string name="msg_insert_ic_card_go_on_transaction">请插入IC卡后，继续交易</string>
+    <string name="msg_payment_no_exist">指定的支付渠道不可用，请联系运维。</string>
 </resources>

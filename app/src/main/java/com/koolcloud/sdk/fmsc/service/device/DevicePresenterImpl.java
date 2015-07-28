@@ -4,6 +4,7 @@ package com.koolcloud.sdk.fmsc.service.device;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
@@ -15,9 +16,7 @@ import java.util.Hashtable;
 import javax.inject.Inject;
 
 public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListener {
-
-    @Inject
-    TransactionInteractor mTransactionInteractor;
+    private final String TAG = "DevicePresenterImpl";
 
     private IDeviceServiceView deviceServiceView;
     private DevicesInteractor devicesInteractor;
@@ -53,12 +52,14 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     }
 
     @Override
-    public void onStartTransaction(Context ctx, JSONObject jsonObject) {
+    public void onStartTransaction(Context ctx, JSONObject jsonObject, TransactionInteractor mTransactionInteractor) {
+        Log.w(TAG, "presenter onStartTransaction");
         mTransactionInteractor.onStartTransaction(ctx, jsonObject, this);
     }
 
     @Override
     public void onFinishTransaction(JSONObject jsonObject) {
+        Log.w(TAG, "presenter onFinishTransaction");
         deviceServiceView.onFinishTransaction(jsonObject);
     }
 
