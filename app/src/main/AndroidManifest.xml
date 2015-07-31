@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.koolcloud.sdk.fmsc"
-    android:versionCode="1"
-    android:versionName="1.0.1.001P">
+    android:versionCode="2"
+    android:versionName="1.1.0.001P">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -88,6 +88,9 @@
             </intent-filter>
         </service>
 
+        <provider android:name="com.koolcloud.sdk.fmsc.provider.PaymentProvider"
+            android:authorities="com.koolcloud.sdk.fmsc.provider">
+        </provider>
     </application>
 
 </manifest>

@@ -140,8 +140,15 @@ public class PaymentParamsDB extends BaseSqlAdapter {
     	
     	//closeDB();
     }
+
+	public Cursor getPayments() {
+		String sql = "select * from " + PAYMENT_PARAMS_TABLE_NAME;
+
+		Cursor cursor = getCursor(sql, null);
+		return cursor;
+	}
     
-    private Cursor selectPaymentByPaymentId(String paymentId) {
+    public Cursor selectPaymentByPaymentId(String paymentId) {
     	String sql = "select * from " + PAYMENT_PARAMS_TABLE_NAME + " where " + ACQUIRE_PAYMENT_ID + " = '" + paymentId + "'";
     	
     	Cursor cursor = getCursor(sql, null);
