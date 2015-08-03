@@ -71,9 +71,9 @@ public class TransactionService extends BaseService implements ITransactionServi
     ITransactionInterface.Stub transactionInterface = new ITransactionInterface.Stub() {
 
         @Override
-        public void signIn(String paymentId, String keyIndex, ITransactionCallBack transactionCallBack) throws RemoteException {
+        public void signIn(String paymentId, ITransactionCallBack transactionCallBack) throws RemoteException {
             mTransactionCallBack = transactionCallBack;
-            mTransactionPresenter.signInPosp(context, paymentId, keyIndex);
+            mTransactionPresenter.signInPosp(context, paymentId);
         }
 
         @Override

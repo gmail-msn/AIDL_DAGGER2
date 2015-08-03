@@ -260,7 +260,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
 
                 onStopSwipeCard();
                 mDevicePresenter.onStartSwiper(context);
-                mDevicePresenter.onStartReadICData(context, paymentId, transAmount);
+                mDevicePresenter.onStartReadICData(context, mBrhKeyIndex, transAmount);
             }
         }
 
@@ -268,9 +268,6 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         public void onStopSwipeCard() throws RemoteException {
             mDevicePresenter.onStopSwipter();
             mDevicePresenter.onStopReadICData();
-
-            //TODO: clear all the params.
-//            clearParams();
         }
 
         @Override

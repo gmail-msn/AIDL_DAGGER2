@@ -25,7 +25,7 @@ import android.content.Context;
 import org.json.JSONObject;
 
 public interface TransactionPresenter {
-    public void signInPosp(Context ctx, String paymentId, String keyIndex);
+    public void signInPosp(Context ctx, String paymentId);
 
     public void onStartTransaction(Context ctx, JSONObject jsonObject);
 }
