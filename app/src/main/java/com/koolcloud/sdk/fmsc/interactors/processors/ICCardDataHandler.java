@@ -44,8 +44,8 @@ public class ICCardDataHandler extends Handler {
                 JSONObject transData = new JSONObject();
                 try {
                     transData.put("errorMessage", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_3));
+                    transData.put("process_code", EMVICManager.STATUS_VALUE_1);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
@@ -54,13 +54,13 @@ public class ICCardDataHandler extends Handler {
             case EMVICManager.STATUS_VALUE_2:
                 break;
             case EMVICManager.STATUS_VALUE_3:
+
                 break;
             case EMVICManager.STATUS_VALUE_4: {
                 JSONObject transData = new JSONObject();
                 try {
                     transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_4));
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
@@ -69,12 +69,24 @@ public class ICCardDataHandler extends Handler {
             case EMVICManager.TRADE_STATUS_0:
                 break;
             case EMVICManager.TRADE_STATUS_1:
-//                onStopSwiper();
+
                 break;
             case EMVICManager.TRADE_STATUS_2:
                 break;
-            case EMVICManager.TRADE_STATUS_3:
+            case EMVICManager.TRADE_STATUS_3: {
+                JSONObject emvCardData = new JSONObject();
+                try {
+                    EMVICData mEMVICData = EMVICData.getEMVICInstance();
+                    emvManager.getPAN();
+                    String pan = mEMVICData.getICPan();
+                    emvCardData.put("card_number", pan);
+                    emvCardData.put("process_code", EMVICManager.TRADE_STATUS_3);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mListener.onReceiveICCardData(emvCardData);
                 break;
+            }
             case EMVICManager.TRADE_STATUS_4:
                 break;
             case EMVICManager.TRADE_STATUS_5:
@@ -88,8 +100,8 @@ public class ICCardDataHandler extends Handler {
                 JSONObject transData = new JSONObject();
                 try {
                     transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_7));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_8);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
@@ -97,15 +109,24 @@ public class ICCardDataHandler extends Handler {
             }
             case EMVICManager.TRADE_STATUS_9:
                 break;
-            case EMVICManager.TRADE_STATUS_10:
+            case EMVICManager.TRADE_STATUS_10: {
+                JSONObject transData = new JSONObject();
+                try {
+                    transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_14));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_10);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mListener.onReceiveICDataError(transData);
                 break;
+            }
             case EMVICManager.TRADE_STATUS_BAN: {
                 JSONObject transData = new JSONObject();
                 try {
                     transData.put("isCancelled", true);
                     transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_9));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_BAN);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
@@ -116,8 +137,8 @@ public class ICCardDataHandler extends Handler {
                 try {
                     transData.put("isCancelled", true);
                     transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_10));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_ABORT);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
@@ -130,15 +151,24 @@ public class ICCardDataHandler extends Handler {
                 try {
                     transData.put("isCancelled", true);
                     transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_12));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_DISABLESERVICE);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 mListener.onReceiveICDataError(transData);
                 break;
             }
-            case EMVICManager.TRADE_STATUS_ONLINE:
+            case EMVICManager.TRADE_STATUS_ONLINE: {
+                JSONObject transData = new JSONObject();
+                try {
+                    transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_13));
+                    transData.put("process_code", EMVICManager.TRADE_STATUS_ONLINE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mListener.onReceiveICDataError(transData);
                 break;
+            }
             case EMVICManager.TRADE_STATUS_AFGETICDATA: {
                 JSONObject transData = new JSONObject();
                 EMVICData mEMVICData = EMVICData.getEMVICInstance();
@@ -149,7 +179,6 @@ public class ICCardDataHandler extends Handler {
                     transData.put("validTime", mEMVICData.getDataOfExpired());
                     transData.put("pwd", pwd);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 UtilFor8583.getInstance().trans.setEntryMode(ConstantUtils.ENTRY_IC_MODE);

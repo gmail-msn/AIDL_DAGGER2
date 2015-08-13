@@ -23,6 +23,7 @@
     <string name="msg_transaction_cancelled">交易已取消</string>
     <string name="msg_input_password">请输入密码</string>
     <string name="msg_swipe_card_error_retry">刷卡错误，请重新刷卡</string>
+    <string name="msg_redo_swipe_card">请重新刷卡</string>
 
     <string name="ic_status_insert_warning_3">IC卡已拔出！</string>
     <string name="ic_status_insert_warning_4">请输入密码</string>
@@ -30,6 +31,12 @@
     <string name="ic_status_insert_warning_9">交易拒绝！</string>
     <string name="ic_status_insert_warning_10">交易中止,请拔卡！</string>
     <string name="ic_status_insert_warning_12">不允许服务，交易中止，请取卡！</string>
+    <string name="ic_status_insert_warning_13">正在联机，请勿拔卡！</string>
+    <string name="ic_status_insert_warning_14">IC卡已插入！</string>
     <string name="msg_insert_ic_card_go_on_transaction">请插入IC卡后，继续交易</string>
     <string name="msg_payment_no_exist">指定的支付渠道不可用，请联系运维。</string>
+    <string name="msg_ic_card_processing">IC卡正在交易进行中</string>
+    <string name="msg_param_transaction_type_error">交易请求类型错误</string>
+    <string name="msg_param_id_card_length_error">身份证长度错误</string>
+    <string name="msg_param_bank_card_length_error">转入卡卡号长度错误</string>
 </resources>

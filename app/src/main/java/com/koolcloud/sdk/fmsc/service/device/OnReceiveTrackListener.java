@@ -32,6 +32,7 @@ public interface OnReceiveTrackListener {
     public void onReceiveTrackData(Hashtable<String, String> trackData);
     public void onReceiveTrackDataError(int resCode, int trackIndex);
     public void onReceiveICData(JSONObject transICData);
+    public void onReceiveICCardData(JSONObject icCardData);
     public void onReceiveICDataError(JSONObject transICData);
     public void onReceivePinpadData(Bundle pinpadData);
 }

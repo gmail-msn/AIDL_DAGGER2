@@ -34,6 +34,8 @@ public interface IDeviceServiceView {
 
     public void onReceiveICData(JSONObject transICData);
 
+    public void onReceiveICCardData(JSONObject icCardData);
+
     public void onReceiveICDataError(JSONObject transICData);
 
     public void onReceivePinpadData(Bundle pinpadData);

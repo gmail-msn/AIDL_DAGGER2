@@ -20,4 +20,5 @@ interface IDevicesInterface {
      **/
     void onStartSwipeCard(String paymentId, String transAmount, String transType, String cardId, String toAccount, IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack);
     void onStopSwipeCard();
+    void startPinPad(boolean isEMVCard);
 }

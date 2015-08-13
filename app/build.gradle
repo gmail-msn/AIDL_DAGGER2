@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
+task copyNativeLibs(type: Copy) {
+    from(new File('libs')) { include '**/*.so' }
+    into new File(buildDir, 'native-libs')
+}
+
+tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn copyNativeLibs }
+
+clean.dependsOn 'cleanCopyNativeLibs'
+
+tasks.withType(com.android.build.gradle.tasks.PackageApplication) {
+    pkgTask ->pkgTask.jniFolders = new HashSet<File>()
+        pkgTask.jniFolders.add(new File(buildDir, 'native-libs'))
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"

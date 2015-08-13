@@ -79,6 +79,11 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     }
 
     @Override
+    public void onReceiveICCardData(JSONObject icCardData) {
+        deviceServiceView.onReceiveICCardData(icCardData);
+    }
+
+    @Override
     public void onReceiveICDataError(JSONObject transICData) {
         deviceServiceView.onReceiveICDataError(transICData);
     }
