@@ -14,6 +14,7 @@ import com.koolyun.smartpos.sdk.service.ApmpService;
 import com.koolyun.smartpos.sdk.service.POSPTransactionService;
 import com.koolyun.smartpos.sdk.util.MessageUtil;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -31,17 +32,21 @@ public class TransactionInteractorImpl implements TransactionInteractor{
 
     @Override
     public void signInPosp(Context ctx, String paymentId, String keyIndex, OnReceiveTransactionListener receiveTransactionListener) {
-        String merchId = PreferenceUtil.getMerchID(ctx);
-        String tId = PreferenceUtil.getTerminalID(ctx);
+        try {
+            String merchId = PreferenceUtil.getMerchID(ctx);
+            String tId = PreferenceUtil.getTerminalID(ctx);
 
-        Log.e(TAG, "merchId:" + merchId);
-        Log.e(TAG, "termId:" + tId);
+            Log.e(TAG, "merchId:" + merchId);
+            Log.e(TAG, "termId:" + tId);
 
-        POSPTransactionService pospTransactionService = ApmpUtil.getTransactionService(ctx, merchId, tId, keyIndex);
-        JSONObject signInObj = pospTransactionService.signIn(paymentId);
-        receiveTransactionListener.onReceiveSignInResult(signInObj);
-
-//        Log.e(TAG, "from transaction interactor");
+            JSONObject signInParams = new JSONObject();
+            signInParams.put("paymentId", paymentId);
+            POSPTransactionService pospTransactionService = ApmpUtil.getTransactionService(ctx, merchId, tId, keyIndex);
+            JSONObject signInObj = pospTransactionService.signIn(signInParams);
+            receiveTransactionListener.onReceiveSignInResult(signInObj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -74,16 +79,18 @@ public class TransactionInteractorImpl implements TransactionInteractor{
                 transResultObj = service.startGetBalance(transObj);
             } else if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_SUPER_TRANSFER)) {
                 transResultObj = service.startSuperTransfer(transObj);
-            } else {
+            } else if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_CONSUME)) {
                 transResultObj = service.startConsumption(transObj);
             }
 
             Log.w(TAG, "transaction interactor transResultObj:" + transResultObj.toString());
-//            if (mReceiveTrackListener != null) {
-//                Log.w(TAG, "ooa");
-                mReceiveTrackListener.onFinishTransaction(transResultObj);
-//            }
 
+            if (null != transResultObj) {
+                transResultObj.remove("respMsg");
+                transResultObj.remove("pk_id");
+                transResultObj.remove("apOrderId");
+            }
+            mReceiveTrackListener.onFinishTransaction(transResultObj);
         }
     }
 }

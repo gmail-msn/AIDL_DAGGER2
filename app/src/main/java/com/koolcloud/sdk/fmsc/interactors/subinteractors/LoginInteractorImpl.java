@@ -127,7 +127,7 @@ public class LoginInteractorImpl implements LoginInteractor {
                     }
 
                     POSPTransactionService pospTransactionService = POSPTransactionService.getInstance(ctx, apmpService, merchId, loginResult.optString("iposId"), "00");
-                    JSONObject signInObj = pospTransactionService.signIn("0000000025");
+                    JSONObject signInObj = pospTransactionService.signIn(null);
 
                     mHandler.sendEmptyMessage(SUCCESS_HANDLER);
 

@@ -4,11 +4,16 @@ package com.koolcloud.sdk.fmsc.service.device;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.util.StringUtils;
+import com.koolyun.smartpos.sdk.util.ConstantUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Hashtable;
@@ -17,7 +22,8 @@ import javax.inject.Inject;
 
 public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListener {
     private final String TAG = "DevicePresenterImpl";
-
+    private final int ID_CARD_MIN_LENGTH = 6;
+    private final int BANK_CARD_LENGTH_MIN = 16;
     private IDeviceServiceView deviceServiceView;
     private DevicesInteractor devicesInteractor;
 
@@ -53,8 +59,33 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
 
     @Override
     public void onStartTransaction(Context ctx, JSONObject jsonObject, TransactionInteractor mTransactionInteractor) {
-        Log.w(TAG, "presenter onStartTransaction");
-        mTransactionInteractor.onStartTransaction(ctx, jsonObject, this);
+        try {
+
+            Log.w(TAG, "presenter onStartTransaction");
+            String transType = jsonObject.optString("transType");
+            String mIdCard = jsonObject.optString("idCard");
+            String mToAccount = jsonObject.optString("toAccount");
+            if (TextUtils.isEmpty(transType)) {
+                jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_transaction_type_error));
+                deviceServiceView.onCheckTransactionParamError(jsonObject);
+                return;
+            }
+            if (!TextUtils.isEmpty(transType) && transType.equals(ConstantUtils.APMP_TRAN_SUPER_TRANSFER)) {
+                if (TextUtils.isEmpty(mIdCard) || mIdCard.length() < ID_CARD_MIN_LENGTH) {
+                    jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_id_card_length_error));
+                    deviceServiceView.onCheckTransactionParamError(jsonObject);
+                    return;
+                }
+                if (TextUtils.isEmpty(mToAccount) || mToAccount.length() < BANK_CARD_LENGTH_MIN) {
+                    jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_bank_card_length_error));
+                    deviceServiceView.onCheckTransactionParamError(jsonObject);
+                    return;
+                }
+            }
+            mTransactionInteractor.onStartTransaction(ctx, jsonObject, this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

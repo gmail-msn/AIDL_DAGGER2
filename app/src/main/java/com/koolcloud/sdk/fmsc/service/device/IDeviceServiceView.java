@@ -41,4 +41,6 @@ public interface IDeviceServiceView {
     public void onReceivePinpadData(Bundle pinpadData);
 
     public void onFinishTransaction(JSONObject jsonObject);
+
+    public void onCheckTransactionParamError(JSONObject jsonObject);
 }

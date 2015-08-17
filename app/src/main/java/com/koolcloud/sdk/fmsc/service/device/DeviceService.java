@@ -37,8 +37,6 @@ import javax.inject.Inject;
  */
 public class DeviceService extends BaseService implements IDeviceServiceView {
     private final String TAG = "DeviceService";
-    private final int ID_CARD_MIN_LENGTH = 6;
-    private final int BANK_CARD_LENGTH_MIN = 16;
 
     @Inject
     DevicePresenter mDevicePresenter;
@@ -276,6 +274,17 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         }
     }
 
+    @Override
+    public void onCheckTransactionParamError(JSONObject jsonObject) {
+        mDevicePresenter.onStopSwipter();
+        mDevicePresenter.onStopReadICData();
+        try {
+            mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     IDevicesInterface.Stub devicesInterface = new IDevicesInterface.Stub() {
 
         @Override
@@ -301,23 +310,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                     mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                     return;
                 } else {
-                    if (TextUtils.isEmpty(transType)) {
-                        jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_param_transaction_type_error));
-                        mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
-                        return;
-                    }
-                    if (!TextUtils.isEmpty(transType) && transType.equals(ConstantUtils.APMP_TRAN_SUPER_TRANSFER)) {
-                        if (TextUtils.isEmpty(mIdCard) || mIdCard.length() < ID_CARD_MIN_LENGTH) {
-                            jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_param_id_card_length_error));
-                            mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
-                            return;
-                        }
-                        if (TextUtils.isEmpty(mToAccount) || mToAccount.length() < BANK_CARD_LENGTH_MIN) {
-                            jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_param_bank_card_length_error));
-                            mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
-                            return;
-                        }
-                    }
+
                     mBrhKeyIndex = paymentInfo.getBrhKeyIndex();
                     mOpenBrh = paymentInfo.getOpenBrh();
 

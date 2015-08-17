@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.koolcloud.sdk.fmsc"
-    android:versionCode="4"
-    android:versionName="1.1.1_08142015002P">
+    android:versionCode="5"
+    android:versionName="1.1.2_08172015012P">
 
     <uses-sdk
         android:minSdkVersion="15"
