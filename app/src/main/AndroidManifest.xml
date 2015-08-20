@@ -36,12 +36,13 @@
     <uses-permission android:name="android.permission.KOOLCLOUD_LED" />
     <uses-permission android:name="android.permission.KOOLCLOUD_SAFE_MODULE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+
     <application
-        android:allowBackup="true"
         android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <!--<activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name">
@@ -57,7 +58,20 @@
             android:label="FMSCReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.koolcloud.sdk.fmsc.receiver.AppBroadcastReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
@@ -65,7 +79,7 @@
         <service
             android:name="com.koolcloud.sdk.fmsc.service.device.DeviceService"
             android:exported="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.koolcloud.sdk.fmsc.service.IDevicesInterface" />
             </intent-filter>
@@ -73,7 +87,7 @@
         <service
             android:name="com.koolcloud.sdk.fmsc.service.transaction.TransactionService"
             android:exported="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.koolcloud.sdk.fmsc.service.ITransactionInterface" />
             </intent-filter>
@@ -81,15 +95,15 @@
         <service
             android:name="com.koolcloud.sdk.fmsc.service.apmp.FapmpService"
             android:exported="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.koolcloud.sdk.fmsc.service.IApmpInterface" />
             </intent-filter>
         </service>
 
-        <provider android:name="com.koolcloud.sdk.fmsc.provider.PaymentProvider"
-            android:authorities="com.koolcloud.sdk.fmsc.provider">
-        </provider>
+        <provider
+            android:name="com.koolcloud.sdk.fmsc.provider.PaymentProvider"
+            android:authorities="com.koolcloud.sdk.fmsc.provider"></provider>
     </application>
 
 </manifest>
