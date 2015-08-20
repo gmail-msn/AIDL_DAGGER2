@@ -24,5 +24,6 @@ import android.content.Context;
 
 public interface FapmpPresenter {
     public void loginApmp(Context ctx, String merchId, String username, String password);
+    public void logoutApmp(Context ctx);
     public void downloadPaymentParams(Context ctx, String merchId);
 }

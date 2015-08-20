@@ -47,7 +47,7 @@ public class FapmpInteractorImpl implements FapmpInteractor {
     @Override
     public void loginApmp(final Context ctx, final String merchId, final String username, final String password, final OnApmpCallBackListener listener) {
         // Mock login. I'm creating a handler to delay the answer a couple of seconds
-        Log.i("LoginInteractorImpl", "login");
+        Log.i("FapmpInteractorImpl", "login");
         this.ctx = ctx;
         this.mListener = listener;
 
@@ -60,6 +60,14 @@ public class FapmpInteractorImpl implements FapmpInteractor {
         }
 
         mListener.onLoginCallBack(loginResult);
+    }
+
+    @Override
+    public void logoutApmp(Context ctx, OnApmpCallBackListener listener) {
+        ApmpService apmpService = ApmpUtil.getApmpInstance(ctx);
+        JSONObject logoutObj = apmpService.logout();
+        Log.i("FapmpInteractorImpl", "logout:" + logoutObj.toString());
+        listener.onLogoutCallBack(logoutObj);
     }
 
     @Override

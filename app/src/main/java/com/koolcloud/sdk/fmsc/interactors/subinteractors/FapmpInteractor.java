@@ -28,5 +28,6 @@ import com.koolcloud.sdk.fmsc.ui.login.OnLoginFinishedListener;
 
 public interface FapmpInteractor {
     public void loginApmp(Context ctx, String merchId, String username, String password, OnApmpCallBackListener listener);
+    public void logoutApmp(Context ctx, OnApmpCallBackListener listener);
     public void downloadPaymentParams(Context ctx, String merchId, OnApmpCallBackListener listener);
 }

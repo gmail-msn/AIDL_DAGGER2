@@ -80,6 +80,12 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
         }
 
         @Override
+        public void logoutApmp(IApmpCallBack apmpCallBack) throws RemoteException {
+            mIApmpCallBack = apmpCallBack;
+            mFapmpPresenter.logoutApmp(context);
+        }
+
+        @Override
         public void downloadPaymentParams(String merchId, IApmpCallBack apmpCallBack) throws RemoteException {
             mIApmpCallBack = apmpCallBack;
             mFapmpPresenter.downloadPaymentParams(context, merchId);
@@ -105,6 +111,15 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
     public void onLoginCallBack(JSONObject loginResult) {
         try {
             mIApmpCallBack.loginApmpCallBack(loginResult.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLogoutCallBack(JSONObject logoutResult) {
+        try {
+            mIApmpCallBack.logoutCallBack(logoutResult.toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

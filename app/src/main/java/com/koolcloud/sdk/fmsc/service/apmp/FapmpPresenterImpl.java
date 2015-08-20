@@ -24,6 +24,11 @@ public class FapmpPresenterImpl implements FapmpPresenter, OnApmpCallBackListene
     }
 
     @Override
+    public void logoutApmp(Context ctx) {
+        fApmpInteractor.logoutApmp(ctx, this);
+    }
+
+    @Override
     public void downloadPaymentParams(Context ctx, String merchId) {
         fApmpInteractor.downloadPaymentParams(ctx, merchId, this);
     }
@@ -31,6 +36,11 @@ public class FapmpPresenterImpl implements FapmpPresenter, OnApmpCallBackListene
     @Override
     public void onLoginCallBack(JSONObject loginResult) {
         iFapmpServiceView.onLoginCallBack(loginResult);
+    }
+
+    @Override
+    public void onLogoutCallBack(JSONObject logoutResult) {
+        iFapmpServiceView.onLogoutCallBack(logoutResult);
     }
 
     @Override
