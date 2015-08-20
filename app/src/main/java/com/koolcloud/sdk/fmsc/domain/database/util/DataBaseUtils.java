@@ -1,22 +1,22 @@
 package com.koolcloud.sdk.fmsc.domain.database.util;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.database.BankDB;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by admin on 2015/8/20.
+ * Bug exist during copy db to /data/data/${package}/databases/*.db
+ * waiting for fixing
  */
+@Deprecated
 public class DataBaseUtils {
 
     private static String dbPath;
@@ -45,19 +45,13 @@ public class DataBaseUtils {
     }
 
     private static boolean checkDataBase() {
-        SQLiteDatabase checkDB = null;
-        try {
-            checkDB = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READONLY);
-        } catch (SQLiteException e) {
-            //database does't exist yet.
-        } catch (Exception e) {
 
+        File dbfile = new File(dbPath);
+        if (dbfile.exists()) {
+            return true;
+        } else {
+            return false;
         }
-
-        if (checkDB != null) {
-            checkDB.close();
-        }
-        return checkDB != null ? true : false;
     }
 
     private static void copyDataBase(Context context, String assetDBName, int rawDBId) throws IOException {
@@ -69,7 +63,14 @@ public class DataBaseUtils {
             myInput = context.getResources().openRawResource(rawDBId);
         }
         // Path to the just created empty db
-        String outFileName = BankDB.DB_PATH + BankDB.DATABASE_NAME;
+//        String outFileName = BankDB.DB_PATH + BankDB.DATABASE_NAME;
+        String outFileName;
+        if (android.os.Build.VERSION.SDK_INT >= 4.2) {
+            outFileName = context.getApplicationInfo().dataDir + "/databases/" + BankDB.DATABASE_NAME;
+        } else {
+            outFileName = "/data/data/" + context.getPackageName() + "/databases/" + BankDB.DATABASE_NAME;
+        }
+        Log.w("DataBaseUtils", "path:" + outFileName);
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
         //transfer bytes from the inputfile to the outputfile

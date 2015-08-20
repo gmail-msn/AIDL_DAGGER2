@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.database.util.DataBaseUtils;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
  */
 public class BankDB extends BaseSqlAdapter {
 
-	public static String DB_PATH = "/data/data/com.koolcloud.sdk.fmsc/databases/";
 	public final static String DATABASE_NAME = "bank_table.db";
 	private final static int DATABASE_VERSION = 1;
     private final static String BANK_TABLE_NAME = "bank_table";
@@ -45,11 +45,7 @@ public class BankDB extends BaseSqlAdapter {
 
     private BankDB(Context ctx, int version) {
     	this.context = ctx;
-		try {
-			DataBaseUtils.createFromRawDataBase(context, BankDB.DB_PATH + BankDB.DATABASE_NAME, R.raw.bank_table);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
     	if (dbName == null) {
     		dbName = context.getFileStreamPath(DATABASE_NAME).getAbsolutePath();
     	}
@@ -144,17 +140,11 @@ public class BankDB extends BaseSqlAdapter {
 		closeDB();
     }
 
-    class BankDBHelper extends SQLiteOpenHelper {
+    class BankDBHelper extends SQLiteAssetHelper {
     	Context ctx;
 		public BankDBHelper(Context context, String name, CursorFactory factory, int version) {
 			super(context, name, factory, version);
 			ctx = context;
-		}
-
-		@Override
-		
-		public void onCreate(SQLiteDatabase db) {
-			createTables(db);
 		}
 
 		@Override

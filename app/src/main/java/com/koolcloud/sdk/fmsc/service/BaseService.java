@@ -26,12 +26,6 @@ public abstract class BaseService extends IntentService {
         super.onCreate();
         setupComponent((AppComponent) App.getApplication(this).component());
 
-        try {
-            DataBaseUtils.createFromRawDataBase(this, BankDB.DB_PATH + BankDB.DATABASE_NAME, R.raw.bank_table);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         //test bank
         /*BankDB bankDB = BankDB.getInstance(this);
         Log.i("BaseService", "01040000 bankName:" + bankDB.getBankNameByIssuerId("01040000"));*/

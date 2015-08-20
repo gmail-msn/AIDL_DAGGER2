@@ -29,15 +29,5 @@ public class FMSCReceiver extends BroadcastReceiver {
 
         Intent fapmpService = new Intent(context, FapmpService.class);
         context.startService(fapmpService);
-
-        try {
-            DataBaseUtils.createFromRawDataBase(context, BankDB.DB_PATH + BankDB.DATABASE_NAME, R.raw.bank_table);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //test bank
-        /*BankDB bankDB = BankDB.getInstance(context);
-        Log.i("FMSCReceiver", "01040000 bankName:" + bankDB.getBankNameByIssuerId("01040000"));*/
     }
 }
