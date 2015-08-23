@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sdk_jni_em">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/sdk_jni_em.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
