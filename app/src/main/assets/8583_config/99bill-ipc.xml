@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<j8583-config>
+
+	<!-- 消费|消费撤消|预授权完成（联机）|预授权完成撤消|余额查询 -->
+	<header type="0200"></header>
+
+	<parse type="0200">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="24" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="35" type="LLVAR" length="37" />
+		<field num="36" type="LLLVAR" length="106" />
+
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15"/>
+		<field num="49" type="ALPHA" length="2" />
+
+		<field num="52" type="BINARY" length="64" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="61" type="LLLVAR" length="29"
+			   hasSubfields="true">
+			<subfield num="611" type="NUMERIC" length="6" />
+			<subfield num="612" type="NUMERIC" length="6" />
+			<subfield num="613" type="NUMERIC" length="4" />
+		</field>
+		<field num="64" type="BINARY" length="64" needsBcd="true" />
+	</parse>
+
+
+</j8583-config>

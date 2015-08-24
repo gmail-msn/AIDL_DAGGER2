@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/8583_config/99bill-ipc.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/8583_config/cups-ipc.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/8583_config/posp-ipc.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/8583_config/xp-ipc.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/assets/databases" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/assets/databases/bank_table.db" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />

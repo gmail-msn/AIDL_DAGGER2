@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<j8583-config>
+	<!-- 预授权|预授权撤消 -->
+	<header type="0100"></header>
+	<header type="0110"></header>
+
+	<!-- 消费|消费撤消|预授权完成（联机）|预授权完成撤消|余额查询 -->
+	<header type="0200"></header>
+	<header type="0210"></header>
+
+	<!-- 退货|预授权完成（离线） -->
+	<header type="0220"></header>
+	<header type="0230"></header>
+
+	<!-- 冲正 -->
+	<header type="0400"></header>
+	<header type="0410"></header>
+
+	<!-- 批结算 -->
+	<header type="0500"></header>
+	<header type="0510"></header>
+
+	<!-- 签到 -->
+	<header type="0800"></header>
+	<header type="0810"></header>
+
+	<!-- 参与MAC计算的数据元 -->
+	<parse type="macSource">
+		<field num="0" type="NUMERIC" length="4" />
+		<field num="2" type="LLVAR" length="19" />
+		<field num="3" type="NUMERIC" length="6" />
+		<field num="4" type="NUMERIC" length="12" />
+		<field num="11" type="NUMERIC" length="6" />
+		<field num="18" type="NUMERIC" length="4" />
+		<field num="25" type="NUMERIC" length="2" />
+		<field num="32" type="LLVAR" length="11" />
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+	</parse>
+	<!-- 结束报文头 -->
+
+	<!-- 预授权|预授权撤消 -->
+	<parse type="0100">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+		<field num="26" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="35" type="LLVAR" length="37" needsBcd="true" />
+		<field num="36" type="LLLVAR" length="106" needsBcd="true" />
+		<field num="38" type="ALPHA" length="6" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="52" type="BINARY" length="64" />
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+			<subfield num="604" type="NUMERIC" length="1" />
+			<subfield num="605" type="NUMERIC" length="1" />
+			<subfield num="606" type="NUMERIC" length="4" />
+			<subfield num="607" type="NUMERIC" length="2" />
+		</field>
+		<field num="61" type="LLLVAR" length="29" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="611" type="NUMERIC" length="6" />
+			<subfield num="612" type="NUMERIC" length="6" />
+			<subfield num="613" type="NUMERIC" length="4" />
+		</field>
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" hasSubfields="true">
+			<subfield num="631" type="ALPHA" length="3" />
+			<subfield num="632" type="LLLVAR" length="120" />
+		</field>
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+	<parse type="0110">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="15" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="18" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="44" type="LLVAR" length="25" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="47" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="54" type="LLLVAR" length="20" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" />
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+	<!-- 结束预授权|预授权撤消 -->
+
+	<!-- 消费|消费撤消|预授权完成（联机）|预授权完成撤消|余额查询 -->
+	<parse type="0200">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+		<field num="26" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="35" type="LLVAR" length="37" needsBcd="true" />
+		<field num="36" type="LLLVAR" length="106" needsBcd="true" />
+		<field num="38" type="ALPHA" length="6" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="52" type="BINARY" length="64" />
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<!-- 
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+			<subfield num="604" type="NUMERIC" length="1" />
+			<subfield num="605" type="NUMERIC" length="1" />
+			<subfield num="606" type="NUMERIC" length="4" />
+			<subfield num="607" type="NUMERIC" length="2" />
+		</field> 
+		-->
+		<field num="61" type="LLLVAR" length="29" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="611" type="NUMERIC" length="6" />
+			<subfield num="612" type="NUMERIC" length="6" />
+			<subfield num="613" type="NUMERIC" length="4" />
+		</field>
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" hasSubfields="true">
+			<subfield num="631" type="ALPHA" length="3" />
+			<subfield num="632" type="LLLVAR" length="120" />
+		</field>
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+
+	<parse type="0210">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="15" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="18" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="44" type="LLVAR" length="25" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="47" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="54" type="LLLVAR" length="20" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" />
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+	<!-- 结束消费|消费撤消|预授权完成（联机）|预授权完成撤消|余额查询 -->
+
+	<!-- 退货|预授权完成（离线） -->
+	<parse type="0220">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+		<field num="26" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="35" type="LLVAR" length="37" needsBcd="true" />
+		<field num="36" type="LLLVAR" length="106" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="38" type="ALPHA" length="6" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="52" type="BINARY" length="64" />
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+			<subfield num="604" type="NUMERIC" length="1" />
+			<subfield num="605" type="NUMERIC" length="1" />
+			<subfield num="606" type="NUMERIC" length="4" />
+			<subfield num="607" type="NUMERIC" length="2" />
+		</field>
+		<field num="61" type="LLLVAR" length="29" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="611" type="NUMERIC" length="6" />
+			<subfield num="612" type="NUMERIC" length="6" />
+			<subfield num="613" type="NUMERIC" length="4" />
+		</field>
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" hasSubfields="true">
+			<subfield num="631" type="ALPHA" length="3" />
+			<subfield num="632" type="LLLVAR" length="120" />
+		</field>
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+
+	<parse type="0230">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="15" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="18" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="44" type="LLVAR" length="25" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="47" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="54" type="LLLVAR" length="20" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" />
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+	<!-- 结束退货|预授权完成（离线） -->
+
+	<!-- 冲正 -->
+	<parse type="0400">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+		<field num="26" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="52" type="BINARY" length="64" />
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+			<subfield num="604" type="NUMERIC" length="1" />
+			<subfield num="605" type="NUMERIC" length="1" />
+			<subfield num="606" type="NUMERIC" length="4" />
+			<subfield num="607" type="NUMERIC" length="2" />
+		</field>
+		<field num="61" type="LLLVAR" length="29" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="611" type="NUMERIC" length="6" />
+			<subfield num="612" type="NUMERIC" length="6" />
+			<subfield num="613" type="NUMERIC" length="4" />
+		</field>
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+
+	<parse type="0410">
+		<field num="2" type="LLVAR" length="19" needsBcd="true" />
+		<field num="3" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="4" type="NUMERIC" length="12" needsBcd="true" />
+
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="14" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="15" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="18" type="NUMERIC" length="4" needsBcd="true" />
+
+		<field num="22" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="23" type="NUMERIC" length="3" needsBcd="true" />
+		<field num="25" type="NUMERIC" length="2" needsBcd="true" />
+
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="38" type="ALPHA" length="6" />
+		<field num="39" type="ALPHA" length="2" />
+
+		<field num="40" type="LLLLVAR" length="2048" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="44" type="LLVAR" length="25" />
+		<field num="46" type="LLLVAR" length="999" />
+		<field num="47" type="LLLVAR" length="999" />
+		<field num="49" type="ALPHA" length="3" />
+
+		<field num="53" type="NUMERIC" length="16" needsBcd="true" />
+		<field num="54" type="LLLVAR" length="20" />
+		<field num="55" type="LLLVAR" length="255" />
+
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<field num="61" type="LLLVAR" length="29" needsBcd="true" />
+		<field num="62" type="LLLVAR" length="512" />
+		<field num="63" type="LLLVAR" length="63" />
+		<field num="64" type="BINARY" length="64" />
+	</parse>
+	<!-- 结束冲正 -->
+
+	<!-- 批结算 -->
+	<parse type="0500">
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="48" type="LLLVAR" length="62" needsBcd="true" />
+		<field num="49" type="ALPHA" length="3" />
+		<field num="60" type="LLLVAR" length="11" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+		</field>
+		<field num="63" type="LLLVAR" length="3" hasSubfields="true">
+			<subfield num="631" type="ALPHA" length="3" />
+		</field>
+	</parse>
+	<parse type="0510">
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="15" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="39" type="ALPHA" length="2" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="48" type="LLLVAR" length="62" needsBcd="true" />
+		<field num="49" type="ALPHA" length="3" />
+		<field num="60" type="LLLVAR" length="11" needsBcd="true" />
+		<field num="63" type="LLLVAR" length="3" />
+	</parse>
+	<!-- 结束批结算 -->
+
+	<!-- 签到 -->
+	<parse type="0800">
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="60" type="LLLVAR" length="11" needsBcd="true"
+			   hasSubfields="true">
+			<subfield num="601" type="NUMERIC" length="2" />
+			<subfield num="602" type="NUMERIC" length="6" />
+			<subfield num="603" type="NUMERIC" length="3" />
+		</field>
+		<field num="62" type="LLLVAR" length="104" />
+		<field num="63" type="LLLVAR" length="3" hasSubfields="true">
+			<subfield num="631" type="ALPHA" length="3" />
+		</field>
+	</parse>
+	<parse type="0810">
+		<field num="11" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="12" type="NUMERIC" length="6" needsBcd="true" />
+		<field num="13" type="NUMERIC" length="4" needsBcd="true" />
+		<field num="32" type="LLVAR" length="11" needsBcd="true" />
+		<field num="37" type="ALPHA" length="12" />
+		<field num="39" type="ALPHA" length="2" />
+		<field num="41" type="ALPHA" length="8" />
+		<field num="42" type="ALPHA" length="15" />
+		<field num="60" type="LLLVAR" length="19" needsBcd="true" />
+		<field num="62" type="LLLVAR" length="104" />
+	</parse>
+	<!-- 结束签到 -->
+
+</j8583-config>
