@@ -145,6 +145,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
 
     private void startPinpadAfterSwipeCard(boolean isEMVCard) {
         try {
+            JSONObject jsonObject = new JSONObject();
             if (!isEMVCard) {
                 if (null != startPinPadObj) {
                     mDevicePresenter.onStartPinPad(context, startPinPadObj);
@@ -152,10 +153,11 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                     //FIXME: clean the cache data and reswipe the card
                     cleanCacheParams();
                     mDevicePresenter.onStartSwiper(context);
-                    mDevicesCallBack.onSwipeCardErrorCallBack(StringUtils.getResourceString(context, R.string.msg_redo_swipe_card));
+                    jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_redo_swipe_card));
+                    mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                 }
             } else {
-                JSONObject jsonObject = new JSONObject();
+
                 jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_insert_ic_card_go_on_transaction));
 
                 if (!emvCardInserted) {
@@ -172,8 +174,12 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     @Override
     public void receiveTrackDataError(int resCode, int trackIndex) {
         try {
-            mDevicesCallBack.onSwipeCardErrorCallBack(StringUtils.getResourceString(context, R.string.msg_swipe_card_error_retry));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_swipe_card_error_retry));
+            mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
         } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

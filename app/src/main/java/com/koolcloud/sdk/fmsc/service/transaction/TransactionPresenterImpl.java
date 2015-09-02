@@ -31,6 +31,7 @@ public class TransactionPresenterImpl implements TransactionPresenter, OnReceive
         if (null == paymentInfo) {
             try {
                 JSONObject jsonObject = new JSONObject();
+                jsonObject.put("responseCode", 1);
                 jsonObject.put("errorMsg", StringUtils.getResourceString(ctx, R.string.msg_payment_no_exist));
                 transactionServiceView.onReceiveSignInResult(jsonObject);
             } catch (JSONException e) {

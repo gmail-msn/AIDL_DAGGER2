@@ -43,7 +43,7 @@ public class ICCardDataHandler extends Handler {
             case EMVICManager.STATUS_VALUE_1: {
                 JSONObject transData = new JSONObject();
                 try {
-                    transData.put("errorMessage", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_3));
+                    transData.put("message", StringUtils.getResourceString(context, R.string.ic_status_insert_warning_3));
                     transData.put("process_code", EMVICManager.STATUS_VALUE_1);
                 } catch (JSONException e) {
                     e.printStackTrace();
