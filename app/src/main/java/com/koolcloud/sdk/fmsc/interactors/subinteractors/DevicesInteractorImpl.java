@@ -33,7 +33,7 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
     private final int FINISH_TRANSACTION_HANDLER = 1;
     private CardSwiper ex_cardSwiper;
     private EMVICManager emvManager = null;
-    private OnReceiveTrackListener mListener;
+    private static OnReceiveTrackListener mListener;
     private static final int RECEIVE_TRACK_DATA = 0;
     private static final int RECEIVE_TRACK_DATA_ERROR = 1;
     private Context context;
@@ -79,8 +79,8 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
 
     @Override
     public void onStartReadICData(Context context, String keyIndex, String transAmountIC, OnReceiveTrackListener listener) {
+        this.mListener = listener;
 
-//        Looper.prepare();
         if (waitDataLooper == null) {
             HandlerThread waitDataThread = new HandlerThread("waitICData");
             waitDataThread.start();
@@ -90,12 +90,11 @@ public class DevicesInteractorImpl implements DevicesInteractor, CardSwiper.Card
         if (emvManager == null) {
             emvManager = EMVICManager.getEMVICManagerInstance();
             emvManager.setTransAmount(transAmountIC);
-            mICDataHandler = new ICCardDataHandler(context, listener, emvManager, waitDataLooper);
+            mICDataHandler = new ICCardDataHandler(context, mListener, emvManager, waitDataLooper);
             emvManager.onCreate(context, keyIndex, mICDataHandler);
         }
-        this.mListener = listener;
+
         emvManager.onStart();
-//        Looper.loop();
     }
 
     @Override
