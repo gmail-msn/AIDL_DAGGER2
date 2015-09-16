@@ -110,6 +110,9 @@ public class JsonUtil {
             transJsonObj.put("openBrh", paramsObj.optString("openBrh"));
             transJsonObj.put("F40_6F20", paramsObj.optString("openBrh"));
             transJsonObj.put("iposId", terminalId);
+            transJsonObj.put("orderId", paramsObj.optString("orderId"));
+            transJsonObj.put("entryMode", paramsObj.optString("entryMode"));
+            transJsonObj.put("validTime", paramsObj.optString("validTime"));
 
         } catch (JSONException e) {
             e.printStackTrace();

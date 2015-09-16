@@ -15,10 +15,12 @@ interface IDevicesInterface {
      *      1721 -- Super Transfer
      * String cardId: the identity card of people (last 6 int number), the parameter is null on Balance Query
      * String toAccout: Transferee card NO, the parameter is null on Balance Query
+     * String orderId: 3rd part bussiness ID
      * IDevicesCallBack devicesCallBack: devices response call back
      * ITransactionCallBack transactionCallBack: transaction call back
      **/
-    void onStartSwipeCard(String paymentId, String transAmount, String transType, String cardId, String toAccount, IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack);
+    void onStartSwipeCard(String paymentId, String transAmount, String transType, String cardId, String toAccount, String orderId, IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack);
     void onStopSwipeCard();
+    void stopTransaction();
     void startPinPad(boolean isEMVCard);
 }

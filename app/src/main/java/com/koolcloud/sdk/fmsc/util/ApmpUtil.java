@@ -17,6 +17,7 @@ public class ApmpUtil {
         ApmpService apmpService = ApmpService.getInstance(ctx);
         apmpService.setClientType(ApmpService.POS_TYPE_SMART);
         apmpService.setEnvironmentMode(ApmpService.ENV_PRODUCT);
+//        apmpService.setEnvironmentMode(ApmpService.ENV_TEST);
         apmpService.setAndroidBuildSerial(android.os.Build.SERIAL);
         mApmpService = apmpService;
         return apmpService;

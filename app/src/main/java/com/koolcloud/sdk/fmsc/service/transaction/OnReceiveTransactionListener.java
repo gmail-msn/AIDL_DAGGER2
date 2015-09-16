@@ -30,5 +30,5 @@ public interface OnReceiveTransactionListener {
 
     public void onFinishTransaction(JSONObject jsonObject);
     public void onReceiveSignInResult(JSONObject jsonObject);
-
+    public void onReceiveClearReversalData(boolean result);
 }

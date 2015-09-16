@@ -36,13 +36,14 @@ public class TransactionInteractorImpl implements TransactionInteractor{
             String merchId = PreferenceUtil.getMerchID(ctx);
             String tId = PreferenceUtil.getTerminalID(ctx);
 
-            Log.e(TAG, "merchId:" + merchId);
-            Log.e(TAG, "termId:" + tId);
+            Log.i(TAG, "merchId:" + merchId);
+            Log.i(TAG, "termId:" + tId);
 
             JSONObject signInParams = new JSONObject();
             signInParams.put("paymentId", paymentId);
             POSPTransactionService pospTransactionService = ApmpUtil.getTransactionService(ctx, merchId, tId, keyIndex);
             JSONObject signInObj = pospTransactionService.signIn(signInParams);
+            handleResponseJsonObj(signInObj);
             receiveTransactionListener.onReceiveSignInResult(signInObj);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -56,6 +57,17 @@ public class TransactionInteractorImpl implements TransactionInteractor{
 
         JSONObject transObj = JsonUtil.makeTransactionParams(ctx, jsonObject);
         new ExecuteTransactionThread(transObj).start();
+    }
+
+    @Override
+    public void clearReversalData(Context ctx, OnReceiveTransactionListener receiveTransactionListener) {
+        this.context = ctx;
+        String merchId = PreferenceUtil.getMerchID(context);
+        String termId = PreferenceUtil.getTerminalID(context);
+
+        POSPTransactionService service = ApmpUtil.getTransactionService(context, merchId, termId, "");
+        boolean result = service.clearReversalData();
+        receiveTransactionListener.onReceiveClearReversalData(result);
     }
 
     class ExecuteTransactionThread extends Thread {
@@ -83,14 +95,17 @@ public class TransactionInteractorImpl implements TransactionInteractor{
                 transResultObj = service.startConsumption(transObj);
             }
 
-            Log.w(TAG, "transaction interactor transResultObj:" + transResultObj.toString());
-
-            if (null != transResultObj) {
-                transResultObj.remove("respMsg");
-                transResultObj.remove("pk_id");
-                transResultObj.remove("apOrderId");
-            }
+            handleResponseJsonObj(transResultObj);
             mReceiveTrackListener.onFinishTransaction(transResultObj);
+        }
+    }
+
+    private void handleResponseJsonObj(JSONObject resObj) {
+        if (null != resObj) {
+            resObj.remove("respMsg");
+            resObj.remove("pk_id");
+            resObj.remove("apOrderId");
+            resObj.remove("action");
         }
     }
 }

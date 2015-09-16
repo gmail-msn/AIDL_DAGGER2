@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.R;
+import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
@@ -23,7 +24,8 @@ import javax.inject.Inject;
 public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListener {
     private final String TAG = "DevicePresenterImpl";
     private final int ID_CARD_MIN_LENGTH = 6;
-    private final int BANK_CARD_LENGTH_MIN = 16;
+    private final int BANK_CARD_LENGTH_MIN = 11;
+    private final int BANK_CARD_LENGTH_MAX = 19;
     private IDeviceServiceView deviceServiceView;
     private DevicesInteractor devicesInteractor;
 
@@ -67,17 +69,20 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
             String mToAccount = jsonObject.optString("toAccount");
             if (TextUtils.isEmpty(transType)) {
                 jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_transaction_type_error));
+                jsonObject.put("process_code", Constant.PROCESS_CODE_31);
                 deviceServiceView.onCheckTransactionParamError(jsonObject);
                 return;
             }
             if (!TextUtils.isEmpty(transType) && transType.equals(ConstantUtils.APMP_TRAN_SUPER_TRANSFER)) {
                 if (TextUtils.isEmpty(mIdCard) || mIdCard.length() < ID_CARD_MIN_LENGTH) {
                     jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_id_card_length_error));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_32);
                     deviceServiceView.onCheckTransactionParamError(jsonObject);
                     return;
                 }
-                if (TextUtils.isEmpty(mToAccount) || mToAccount.length() < BANK_CARD_LENGTH_MIN) {
+                if (TextUtils.isEmpty(mToAccount) || mToAccount.length() < BANK_CARD_LENGTH_MIN || mToAccount.length() > BANK_CARD_LENGTH_MAX) {
                     jsonObject.put("message", StringUtils.getResourceString(ctx, R.string.msg_param_bank_card_length_error));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_33);
                     deviceServiceView.onCheckTransactionParamError(jsonObject);
                     return;
                 }

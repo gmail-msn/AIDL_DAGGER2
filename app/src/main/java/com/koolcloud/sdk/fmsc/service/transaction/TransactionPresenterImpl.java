@@ -3,6 +3,7 @@ package com.koolcloud.sdk.fmsc.service.transaction;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.database.PaymentParamsDB;
@@ -39,6 +40,7 @@ public class TransactionPresenterImpl implements TransactionPresenter, OnReceive
             }
         } else {
             String keyIndex = paymentInfo.getBrhKeyIndex();
+            Log.e("TransactionPresenterImpl", "signId key index:" + keyIndex);
             transactionInteractor.signInPosp(ctx, paymentId, keyIndex, this);
         }
     }
@@ -49,6 +51,11 @@ public class TransactionPresenterImpl implements TransactionPresenter, OnReceive
     }
 
     @Override
+    public void clearReversalData(Context ctx) {
+        transactionInteractor.clearReversalData(ctx, this);
+    }
+
+    @Override
     public void onFinishTransaction(JSONObject jsonObject) {
         transactionServiceView.onFinishTransaction(jsonObject);
     }
@@ -56,6 +63,11 @@ public class TransactionPresenterImpl implements TransactionPresenter, OnReceive
     @Override
     public void onReceiveSignInResult(JSONObject jsonObject) {
         transactionServiceView.onReceiveSignInResult(jsonObject);
+    }
+
+    @Override
+    public void onReceiveClearReversalData(boolean result) {
+        transactionServiceView.onReceiveClearReversalData(result);
     }
 
 }

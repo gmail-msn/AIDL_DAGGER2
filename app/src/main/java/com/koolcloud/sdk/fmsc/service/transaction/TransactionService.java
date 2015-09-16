@@ -77,6 +77,12 @@ public class TransactionService extends BaseService implements ITransactionServi
         }
 
         @Override
+        public void clearReversalData(ITransactionCallBack transactionCallBack) throws RemoteException {
+            mTransactionCallBack = transactionCallBack;
+            mTransactionPresenter.clearReversalData(context);
+        }
+
+        @Override
         public boolean onTransact(int code, Parcel data, android.os.Parcel reply, int flags) throws RemoteException {
             try {
                 return super.onTransact(code, data, reply, flags);
@@ -101,6 +107,15 @@ public class TransactionService extends BaseService implements ITransactionServi
     public void onReceiveSignInResult(JSONObject jsonObject) {
         try {
             mTransactionCallBack.signInCallBack(jsonObject.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onReceiveClearReversalData(boolean result) {
+        try {
+            mTransactionCallBack.onClearReversalDataCallBack(result);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

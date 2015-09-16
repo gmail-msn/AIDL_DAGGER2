@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.AppComponent;
 import com.koolcloud.sdk.fmsc.R;
+import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolcloud.sdk.fmsc.domain.database.PaymentParamsDB;
 import com.koolcloud.sdk.fmsc.domain.entity.PaymentInfo;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
@@ -20,12 +22,9 @@ import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
 import com.koolyun.smartpos.sdk.message.parameter.EMVICManager;
-import com.koolyun.smartpos.sdk.message.parameter.UtilFor8583;
-import com.koolyun.smartpos.sdk.util.ConstantUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.Hashtable;
 
@@ -53,6 +52,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     private String mOpenBrh;
     private String mIdCard;
     private String mToAccount;
+    private String mOrderId;
 
     private JSONObject transJsonObj = null;
     private JSONObject startPinPadObj = new JSONObject();
@@ -121,9 +121,11 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                     cachedSwipeCardData(trackData);
                     jsonObject.put("card_number", trackData.get("pan"));
                     jsonObject.put("show_dialog", true);
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_24);
                     mDevicesCallBack.onGetCardDataCallBack(jsonObject.toString());
                 } else {
                     jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_insert_ic_card_go_on_transaction));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_11);
                     mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                 }
             } else {
@@ -132,6 +134,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 cachedSwipeCardData(trackData);
                 jsonObject.put("card_number", trackData.get("pan"));
                 jsonObject.put("show_dialog", false);
+                jsonObject.put("process_code", Constant.PROCESS_CODE_24);
                 //TODO: send message with card pan data to client
                 mDevicesCallBack.onGetCardDataCallBack(jsonObject.toString());
             }
@@ -151,12 +154,13 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                     cleanCacheParams();
                     mDevicePresenter.onStartSwiper(context);
                     jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_redo_swipe_card));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_22);
                     mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                 }
             } else {
 
                 jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_insert_ic_card_go_on_transaction));
-
+                jsonObject.put("process_code", Constant.PROCESS_CODE_11);
                 if (!emvCardInserted) {
                     mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                 }
@@ -171,6 +175,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_swipe_card_error_retry));
+            jsonObject.put("process_code", Constant.PROCESS_CODE_21);
             mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
         } catch (Exception e) {
             Log.w(TAG, e);
@@ -196,7 +201,8 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             transJsonObj.put("openBrh", mOpenBrh);
             transJsonObj.put("idCard", mIdCard);
             transJsonObj.put("toAccount", mToAccount);
-
+            transJsonObj.put("orderId", mOrderId);
+            transJsonObj.put("entryMode", Constant.ENTRY_IC_MODE);
             //TODO: close MSR
             mDevicePresenter.onStopSwipter();
 
@@ -221,15 +227,15 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     @Override
     public void onReceiveICDataError(JSONObject transICData) {
         try {
-            int processCode = transICData.optInt("process_code");
-            switch (processCode) {
-                case EMVICManager.TRADE_STATUS_10:
+            String processCode = transICData.optString("process_code");
+            if (!TextUtils.isEmpty(processCode)) {
+                if (processCode.equals(Constant.PROCESS_CODE_15)) {
                     emvCardInserted = true;
-                    break;
-                case EMVICManager.STATUS_VALUE_1:
+                } else if (processCode.equals(Constant.PROCESS_CODE_13)) {
                     emvCardInserted = false;
-                    break;
+                }
             }
+
             Log.w(TAG, "IC_ERROR:" + transICData.toString());
             mDevicesCallBack.onSwipeCardErrorCallBack(transICData.toString());
         } catch (Exception e) {
@@ -244,14 +250,24 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             JSONObject jsonObject = new JSONObject();
             if (isCancelled) {
                 jsonObject.put("message", StringUtils.getResourceString(this, R.string.msg_transaction_cancelled));
+                jsonObject.put("process_code", Constant.PROCESS_CODE_23);
                 mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
             } else {//TODO: go transaction work flow.
                 String pinblock = pinpadData.getString("pwd");
-                transJsonObj.put("pinblock", pinblock);
 
-                UtilFor8583.getInstance().trans.setEntryMode(ConstantUtils.ENTRY_SWIPER_MODE);
-                //TODO:start transaction
-                mDevicePresenter.onStartTransaction(context, transJsonObj, mTransactionInteractor);
+                if (transJsonObj != null) {
+                    transJsonObj.put("pinblock", pinblock);
+                    transJsonObj.put("orderId", mOrderId);
+
+                    transJsonObj.put("entryMode", Constant.ENTRY_SWIPER_MODE);
+                    //TODO:start transaction
+                    mDevicePresenter.onStartTransaction(context, transJsonObj, mTransactionInteractor);
+                } else {
+                    jsonObject.put("isCancelled", true);
+                    jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_trans_interrupt_warning_17));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_17);
+                    mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
+                }
             }
         } catch (JSONException e) {
             Log.w(TAG, e);
@@ -264,6 +280,13 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
     public void onFinishTransaction(JSONObject jsonObject) {
         Log.w(TAG, "trans result:" + jsonObject.toString());
         try {
+            String orderId = jsonObject.optString("orderId");
+            if ((jsonObject.isNull("orderId") || TextUtils.isEmpty(orderId)) && !TextUtils.isEmpty(mOrderId)) {
+                jsonObject.put("orderId", mOrderId);
+            }
+            if (TextUtils.isEmpty(mOrderId)) {
+                jsonObject.remove("orderId");
+            }
             cleanCacheParams();
             mTransactionCallBack.onTransactionCallBack(jsonObject.toString());
         } catch (Exception e) {
@@ -286,7 +309,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
 
         @Override
         public void onStartSwipeCard(String paymentId, String transAmount, String transType,
-                                     String cardId, String toAccount,
+                                     String cardId, String toAccount, String orderId,
                                      IDevicesCallBack devicesCallBack, ITransactionCallBack transactionCallBack) throws RemoteException {
             transJsonObj = new JSONObject();
             mDevicesCallBack = devicesCallBack;
@@ -296,6 +319,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             mPaymentId = paymentId;
             mIdCard = cardId.trim();
             mToAccount = toAccount.trim();
+            mOrderId = orderId;
 
             try {
                 PaymentParamsDB paymentDB = PaymentParamsDB.getInstance(context);
@@ -303,7 +327,8 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
 
                 JSONObject jsonObject = new JSONObject();
                 if (null == paymentInfo) {
-                        jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_payment_no_exist));
+                    jsonObject.put("message", StringUtils.getResourceString(context, R.string.msg_payment_no_exist));
+                    jsonObject.put("process_code", Constant.PROCESS_CODE_34);
                     mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
                     return;
                 } else {
@@ -324,6 +349,13 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         public void onStopSwipeCard() throws RemoteException {
             mDevicePresenter.onStopSwipter();
             mDevicePresenter.onStopReadICData();
+        }
+
+        @Override
+        public void stopTransaction() throws RemoteException {
+            mDevicePresenter.onStopSwipter();
+            mDevicePresenter.onStopReadICData();
+            cleanCacheParams();
         }
 
         @Override
@@ -361,6 +393,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             transJsonObj.put("openBrh", mOpenBrh);
             transJsonObj.put("idCard", mIdCard);
             transJsonObj.put("toAccount", mToAccount);
+            transJsonObj.put("orderId", mOrderId);
         } catch (JSONException e) {
             Log.w(TAG, e);
         }
@@ -374,6 +407,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         mOpenBrh = null;
         mIdCard = null;
         mToAccount = null;
+        mOrderId = null;
 
         transJsonObj = null;
         startPinPadObj = null;

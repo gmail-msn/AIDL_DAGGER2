@@ -28,4 +28,5 @@ public interface TransactionPresenter {
     public void signInPosp(Context ctx, String paymentId);
 
     public void onStartTransaction(Context ctx, JSONObject jsonObject);
+    public void clearReversalData(Context ctx);
 }

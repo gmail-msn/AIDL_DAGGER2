@@ -4,4 +4,5 @@ import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
 
 interface ITransactionInterface {
     void signIn(String paymentId, ITransactionCallBack transactionCallBack);
+    void clearReversalData(ITransactionCallBack transactionCallBack);
 }
