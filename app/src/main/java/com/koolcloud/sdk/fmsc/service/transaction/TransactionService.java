@@ -11,6 +11,7 @@ import com.koolcloud.sdk.fmsc.AppComponent;
 import com.koolcloud.sdk.fmsc.service.BaseService;
 import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
 import com.koolcloud.sdk.fmsc.service.ITransactionInterface;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import org.json.JSONObject;
 
@@ -37,25 +38,25 @@ public class TransactionService extends BaseService implements ITransactionServi
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate");
+        Logger.i("onCreate");
         super.onCreate();
         this.context = this;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind");
+        Logger.i("onBind");
         return transactionInterface;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
+        Logger.i("onStartCommand");
         return START_STICKY;
     }
 
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Logger.i("onDestroy");
         super.onDestroy();
     }
 
@@ -87,7 +88,7 @@ public class TransactionService extends BaseService implements ITransactionServi
             try {
                 return super.onTransact(code, data, reply, flags);
             } catch (RuntimeException e) {
-                Log.w(TAG, "Unexpected remote exception", e);
+                Logger.i(e.getMessage());
                 throw e;
             }
         }

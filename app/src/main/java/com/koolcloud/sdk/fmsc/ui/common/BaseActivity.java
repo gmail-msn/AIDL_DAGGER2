@@ -26,6 +26,7 @@ import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.App;
 import com.koolcloud.sdk.fmsc.AppComponent;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 
 public abstract class BaseActivity extends Activity {
@@ -34,7 +35,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("BaseActivity", "onCreate");
+        Logger.i("onCreate");
         setupComponent((AppComponent) App.getApplication(this).component());
     }
 

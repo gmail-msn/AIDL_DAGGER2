@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.util.Logger;
+
 import java.util.Hashtable;
 
 import cn.koolcloud.jni.MsrInterface;
@@ -80,11 +82,11 @@ public class CardSwiper {
 	}
 
 	private void gotoPoll(int timeout) {
-		Log.d(TAG, this + " gotoPoll");
+		Logger.i(" gotoPoll");
 
 		int pollResult = MsrInterface.poll(timeout);
 		if (0 != pollResult && !isPollCanceled) {
-			Log.d(TAG, this + " gotoPoll");
+			Logger.i(" gotoPoll");
 			gotoPoll(timeout);
 		}
 		if (0 == pollResult) {
@@ -95,7 +97,7 @@ public class CardSwiper {
 			String track1 = msrGetTrackData(0);
 			String track2 = msrGetTrackData(1);
 			String track3 = msrGetTrackData(2);
-			Log.d(TAG, "SwipeCard track1 : " + track1 + " track2 : " + track2
+			Logger.i("SwipeCard track1 : " + track1 + " track2 : " + track2
 					+ " track3 : " + track3);
 			if (null == track2) {
 				gotoPoll(timeout);
@@ -170,7 +172,7 @@ public class CardSwiper {
 	private String msrGetTrackData(int trackIndex) {
 		int ret = MsrInterface.getTrackError(trackIndex);
 		if (ret < 0) {
-			Log.i(TAG, "msr track" + trackIndex + " error is = " + ret);
+			Logger.i("msr track" + trackIndex + " error is = " + ret);
             Message msg = mHandler.obtainMessage();
             msg.arg1 = ret;
             msg.arg2 = trackIndex;

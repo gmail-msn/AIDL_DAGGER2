@@ -23,6 +23,8 @@ package com.koolcloud.sdk.fmsc.domain;
 import android.app.Application;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.util.Logger;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -32,7 +34,7 @@ import dagger.Provides;
 public class DomainModule {
 
     @Provides @Singleton public AnalyticsManager provideAnalyticsManager(Application app){
-        Log.i("DomainModule", "provideAnalyticsManager");
+        Logger.i("provideAnalyticsManager");
         return new AnalyticsManager(app);
     }
 

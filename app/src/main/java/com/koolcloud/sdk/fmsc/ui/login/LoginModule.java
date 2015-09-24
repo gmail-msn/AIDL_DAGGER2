@@ -24,6 +24,7 @@ package com.koolcloud.sdk.fmsc.ui.login;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,19 +35,19 @@ public class LoginModule {
     private LoginView view;
 
     public LoginModule(LoginView view) {
-        Log.i("LoginModule", "constructor LoginModule()");
+        Logger.i("constructor LoginModule()");
         this.view = view;
     }
 
     @Provides
     public LoginView provideView() {
-        Log.i("LoginModule", "provideView()");
+        Logger.i("provideView()");
         return view;
     }
 
     @Provides
     public LoginPresenter providePresenter(LoginView loginView, LoginInteractor loginInteractor) {
-        Log.i("LoginModule", "providePresenter()");
+        Logger.i("providePresenter()");
         return new LoginPresenterImpl(loginView, loginInteractor);
     }
 }

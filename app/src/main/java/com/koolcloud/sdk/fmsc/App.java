@@ -26,6 +26,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.domain.AnalyticsManager;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import javax.inject.Inject;
 
@@ -41,7 +42,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.w("App", "onCreate()");
+        Logger.i("onCreate()");
         setupGraph();
         analyticsManager.registerAppEnter();
     }
@@ -51,16 +52,16 @@ public class App extends Application {
                 .appModule(new AppModule(this))
                 .build();
         component.inject(this);
-        Log.w("App", "setupGraph()");
+        Logger.i("setupGraph()");
     }
 
     public AppComponent component() {
-        Log.w("App", "component()");
+        Logger.i("component()");
         return component;
     }
 
     public static App getApplication(Context context) {
-        Log.w("App", "getApplication()");
+        Logger.i("getApplication()");
         ctx = context.getApplicationContext();
         return (App) context.getApplicationContext();
     }

@@ -29,6 +29,7 @@ import com.koolcloud.sdk.fmsc.domain.entity.PaymentInfo;
 import com.koolcloud.sdk.fmsc.service.apmp.OnApmpCallBackListener;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
 import com.koolcloud.sdk.fmsc.util.JsonUtil;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.PreferenceUtil;
 import com.koolyun.smartpos.sdk.service.ApmpService;
 
@@ -47,7 +48,7 @@ public class FapmpInteractorImpl implements FapmpInteractor {
     @Override
     public void loginApmp(final Context ctx, final String merchId, final String username, final String password, final OnApmpCallBackListener listener) {
         // Mock login. I'm creating a handler to delay the answer a couple of seconds
-        Log.i("FapmpInteractorImpl", "login");
+        Logger.i("login");
         this.ctx = ctx;
         this.mListener = listener;
 
@@ -66,7 +67,7 @@ public class FapmpInteractorImpl implements FapmpInteractor {
     public void logoutApmp(Context ctx, OnApmpCallBackListener listener) {
         ApmpService apmpService = ApmpUtil.getApmpInstance(ctx);
         JSONObject logoutObj = apmpService.logout();
-        Log.i("FapmpInteractorImpl", "logout:" + logoutObj.toString());
+        Logger.i("logout:" + logoutObj.toString());
         listener.onLogoutCallBack(logoutObj);
     }
 

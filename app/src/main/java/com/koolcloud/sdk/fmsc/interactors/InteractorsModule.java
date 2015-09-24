@@ -30,6 +30,7 @@ import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractorImpl;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractorImpl;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import dagger.Module;
 import dagger.Provides;
@@ -38,7 +39,7 @@ import dagger.Provides;
 public class InteractorsModule {
 
     @Provides public LoginInteractor provideLoginInteractor() {
-        Log.i("InteractorsModule", "provideLoginInteractor()");
+        Logger.i("provideLoginInteractor()");
         return new LoginInteractorImpl();
     }
 

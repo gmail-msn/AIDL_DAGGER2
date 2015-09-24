@@ -23,17 +23,19 @@ package com.koolcloud.sdk.fmsc.domain;
 import android.app.Application;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.util.Logger;
+
 public class AnalyticsManager {
 
     private Application app;
 
     public AnalyticsManager(Application app) {
-        Log.v("AnalyticsManager", "constructor AnalyticsManager()");
+        Logger.v("constructor AnalyticsManager()");
         this.app = app;
     }
 
     public void registerAppEnter() {
-        Log.v("AnalyticsManager", "registerAppEnter()");
+        Logger.v("registerAppEnter()");
 //        Toast.makeText(app, "App enter 1", Toast.LENGTH_LONG).show();
     }
 }

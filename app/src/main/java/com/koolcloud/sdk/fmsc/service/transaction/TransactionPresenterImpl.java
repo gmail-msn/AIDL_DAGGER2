@@ -9,6 +9,7 @@ import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.database.PaymentParamsDB;
 import com.koolcloud.sdk.fmsc.domain.entity.PaymentInfo;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
 
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class TransactionPresenterImpl implements TransactionPresenter, OnReceive
             }
         } else {
             String keyIndex = paymentInfo.getBrhKeyIndex();
-            Log.e("TransactionPresenterImpl", "signId key index:" + keyIndex);
+            Logger.i("signId key index:" + keyIndex);
             transactionInteractor.signInPosp(ctx, paymentId, keyIndex, this);
         }
     }

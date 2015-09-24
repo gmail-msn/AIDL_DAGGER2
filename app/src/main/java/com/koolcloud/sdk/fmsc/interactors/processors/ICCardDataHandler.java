@@ -10,6 +10,7 @@ import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolcloud.sdk.fmsc.domain.devices.PinPadManager;
 import com.koolcloud.sdk.fmsc.service.device.OnReceiveTrackListener;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
 import com.koolyun.smartpos.sdk.message.parameter.EMVICData;
 import com.koolyun.smartpos.sdk.message.parameter.EMVICManager;
@@ -205,7 +206,7 @@ public class ICCardDataHandler extends Handler {
                     break;
             }
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.i(e.getMessage());
         }
     }
 }

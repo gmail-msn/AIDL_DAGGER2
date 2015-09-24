@@ -28,7 +28,7 @@ public abstract class BaseService extends IntentService {
 
         //test bank
         /*BankDB bankDB = BankDB.getInstance(this);
-        Log.i("BaseService", "01040000 bankName:" + bankDB.getBankNameByIssuerId("01040000"));*/
+        Logger.i("01040000 bankName:" + bankDB.getBankNameByIssuerId("01040000"));*/
     }
 
     protected abstract void setupComponent(AppComponent appComponent);

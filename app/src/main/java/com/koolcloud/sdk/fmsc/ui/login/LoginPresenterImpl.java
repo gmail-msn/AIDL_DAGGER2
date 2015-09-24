@@ -25,6 +25,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.LoginInteractor;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 public class LoginPresenterImpl implements LoginPresenter, OnLoginFinishedListener {
 
@@ -32,49 +33,49 @@ public class LoginPresenterImpl implements LoginPresenter, OnLoginFinishedListen
     private LoginInteractor loginInteractor;
 
     public LoginPresenterImpl(LoginView loginView, LoginInteractor loginInteractor) {
-        Log.i("LoginPresenterImpl", "constructor LoginPresenterImpl()");
+        Logger.i("constructor LoginPresenterImpl()");
         this.loginView = loginView;
         this.loginInteractor = loginInteractor;
     }
 
     @Override
     public void validateCredentials(Context ctx, String merchId, String username, String password) {
-        Log.i("LoginPresenterImpl", "validateCredentials()");
+        Logger.i("validateCredentials()");
         loginView.showProgress();
         loginInteractor.login(ctx, merchId, username, password, this);
     }
 
     @Override
     public void onUsernameError() {
-        Log.i("LoginPresenterImpl", "onUsernameError()");
+        Logger.i("onUsernameError()");
         loginView.setUsernameError();
         loginView.hideProgress();
     }
 
     @Override
     public void onPasswordError() {
-        Log.i("LoginPresenterImpl", "onPasswordError()");
+        Logger.i("onPasswordError()");
         loginView.setPasswordError();
         loginView.hideProgress();
     }
 
     @Override
     public void onMerchIdError() {
-        Log.i("LoginPresenterImpl", "onMerchIdError()");
+        Logger.i("onMerchIdError()");
         loginView.setMerchIdError();
         loginView.hideProgress();
     }
 
     @Override
     public void onSuccess() {
-        Log.i("LoginPresenterImpl", "onSuccess()");
+        Logger.i("onSuccess()");
         loginView.hideProgress();
         loginView.navigateToHome();
     }
 
     @Override
     public void onError(String errorMsg) {
-        Log.i("LoginPresenterImpl", "onError()");
+        Logger.i("onError()");
         loginView.showErrorMessage(errorMsg);
         loginView.hideProgress();
     }

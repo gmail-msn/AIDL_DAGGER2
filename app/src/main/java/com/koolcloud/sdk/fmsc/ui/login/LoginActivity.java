@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.koolcloud.sdk.fmsc.AppComponent;
 import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.ui.common.BaseActivity;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import javax.inject.Inject;
 
@@ -58,7 +59,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     protected void setupComponent(AppComponent appComponent) {
-        Log.e("LoginActivity", "setupComponent");
+        Logger.i("setupComponent");
         DaggerLoginComponent.builder()
                 .appComponent(appComponent)
                 .loginModule(new LoginModule(this))

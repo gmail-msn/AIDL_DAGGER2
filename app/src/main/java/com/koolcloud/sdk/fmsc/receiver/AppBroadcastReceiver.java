@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.util.Logger;
+
 /**
  * <p>Title: AppBroadcastReceiver.java </p>
  * <p>Description: App install or remove receiver and then refresh the main UI</p>
@@ -20,25 +22,25 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
-		Log.i(TAG, intent.getDataString());
+		Logger.i(intent.getDataString());
 		if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
-			Log.i(TAG, "app installed");
-			Log.i(TAG, intent.getDataString());
+			Logger.i("app installed");
+			Logger.i(intent.getDataString());
 
 		} else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
-			Log.i(TAG, "app removed");
-			Log.i(TAG, intent.getDataString());
+			Logger.i("app removed");
+			Logger.i(intent.getDataString());
 
 		} else if (Intent.ACTION_PACKAGE_CHANGED.equals(action)) {
-			Log.i(TAG, "app package changed");
-			Log.i(TAG, intent.getDataString());
+			Logger.i("app package changed");
+			Logger.i(intent.getDataString());
 		} else if (Intent.ACTION_PACKAGE_REPLACED.equals(action)) {
-			Log.i(TAG, "app replaced");
-			Log.i(TAG, intent.getDataString());
+			Logger.i("app replaced");
+			Logger.i(intent.getDataString());
 
 		} else if (Intent.ACTION_PACKAGE_RESTARTED.equals(action)) {
-			Log.i(TAG, "app restarted");
-			Log.i(TAG, intent.getDataString());
+			Logger.i("app restarted");
+			Logger.i(intent.getDataString());
 		}
 	}
 }

@@ -11,6 +11,7 @@ import com.koolcloud.sdk.fmsc.R;
 import com.koolcloud.sdk.fmsc.domain.Constant;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.DevicesInteractor;
 import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
 import com.koolyun.smartpos.sdk.util.ConstantUtils;
 
@@ -63,7 +64,7 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
     public void onStartTransaction(Context ctx, JSONObject jsonObject, TransactionInteractor mTransactionInteractor) {
         try {
 
-            Log.w(TAG, "presenter onStartTransaction");
+            Logger.i("presenter onStartTransaction");
             String transType = jsonObject.optString("transType");
             String mIdCard = jsonObject.optString("idCard");
             String mToAccount = jsonObject.optString("toAccount");
@@ -95,7 +96,7 @@ public class DevicePresenterImpl implements DevicePresenter, OnReceiveTrackListe
 
     @Override
     public void onFinishTransaction(JSONObject jsonObject) {
-        Log.w(TAG, "presenter onFinishTransaction");
+        Logger.i("presenter onFinishTransaction");
         deviceServiceView.onFinishTransaction(jsonObject);
     }
 

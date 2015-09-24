@@ -30,6 +30,7 @@ import com.koolcloud.sdk.fmsc.domain.database.PaymentParamsDB;
 import com.koolcloud.sdk.fmsc.domain.entity.PaymentInfo;
 import com.koolcloud.sdk.fmsc.ui.login.OnLoginFinishedListener;
 import com.koolcloud.sdk.fmsc.util.JsonUtil;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.PreferenceUtil;
 import com.koolyun.smartpos.sdk.service.ApmpService;
 import com.koolyun.smartpos.sdk.service.POSPTransactionService;
@@ -51,7 +52,7 @@ public class LoginInteractorImpl implements LoginInteractor {
     @Override
     public void login(final Context ctx, final String merchId, final String username, final String password, final OnLoginFinishedListener listener) {
         // Mock login. I'm creating a handler to delay the answer a couple of seconds
-        Log.i("LoginInteractorImpl", "login");
+        Logger.i("login");
         this.merchId = merchId;
         this.username = username;
         this.password = password;
@@ -101,7 +102,7 @@ public class LoginInteractorImpl implements LoginInteractor {
             apmpService.setEnvironmentMode(ApmpService.ENV_PRODUCT);
             apmpService.setAndroidBuildSerial(android.os.Build.SERIAL);
             JSONObject loginResult = apmpService.login(username, password, merchId, android.os.Build.SERIAL);
-            Log.d("LoginInteractorImpl", loginResult.toString());
+            Logger.i(loginResult.toString());
 
 //                    JSONObject jsonData = JsonUtil.getResponseData(loginResult);
             if (null != loginResult) {
@@ -113,7 +114,7 @@ public class LoginInteractorImpl implements LoginInteractor {
 
                     //TODO:download payment params and then save to local
                     JSONObject paramsObj = apmpService.getPaymentList(merchId);
-                    Log.w("PaymentParams", "params:" + paramsObj.toString());
+                    Logger.i("params:" + paramsObj.toString());
 
                     PaymentParamsDB paymentParamsDB = PaymentParamsDB.getInstance(ctx);
                     JSONArray jsonArray = paramsObj.optJSONArray("prdtList");

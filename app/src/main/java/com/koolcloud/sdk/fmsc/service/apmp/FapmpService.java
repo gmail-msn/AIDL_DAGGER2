@@ -12,6 +12,7 @@ import com.koolcloud.sdk.fmsc.interactors.subinteractors.TransactionInteractor;
 import com.koolcloud.sdk.fmsc.service.BaseService;
 import com.koolcloud.sdk.fmsc.service.IApmpCallBack;
 import com.koolcloud.sdk.fmsc.service.IApmpInterface;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import org.json.JSONObject;
 
@@ -49,25 +50,25 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate");
+        Logger.i("onCreate");
         super.onCreate();
         this.context = this;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind");
+        Logger.i("onBind");
         return apmpInterface;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
+        Logger.i("onStartCommand");
         return START_STICKY;
     }
 
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Logger.i("onDestroy");
         super.onDestroy();
     }
 
@@ -96,7 +97,7 @@ public class FapmpService extends BaseService implements IFapmpServiceView {
             try {
                 return super.onTransact(code, data, reply, flags);
             } catch (RuntimeException e) {
-                Log.w(TAG, "Unexpected remote exception", e);
+                Logger.i(e.getMessage());
                 throw e;
             }
         }

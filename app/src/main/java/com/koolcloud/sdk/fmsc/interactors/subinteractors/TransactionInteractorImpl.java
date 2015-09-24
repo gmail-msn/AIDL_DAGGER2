@@ -9,6 +9,7 @@ import com.koolcloud.sdk.fmsc.service.device.OnReceiveTrackListener;
 import com.koolcloud.sdk.fmsc.service.transaction.OnReceiveTransactionListener;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
 import com.koolcloud.sdk.fmsc.util.JsonUtil;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.PreferenceUtil;
 import com.koolyun.smartpos.sdk.service.ApmpService;
 import com.koolyun.smartpos.sdk.service.POSPTransactionService;
@@ -36,8 +37,8 @@ public class TransactionInteractorImpl implements TransactionInteractor{
             String merchId = PreferenceUtil.getMerchID(ctx);
             String tId = PreferenceUtil.getTerminalID(ctx);
 
-            Log.i(TAG, "merchId:" + merchId);
-            Log.i(TAG, "termId:" + tId);
+            Logger.i("merchId:" + merchId);
+            Logger.i("termId:" + tId);
 
             JSONObject signInParams = new JSONObject();
             signInParams.put("paymentId", paymentId);
@@ -86,7 +87,7 @@ public class TransactionInteractorImpl implements TransactionInteractor{
             JSONObject transResultObj = null;
 
             String transType = transObj.optString("transType");
-            Log.w(TAG, "transaction interactor transType:" + transType);
+            Logger.i("transaction interactor transType:" + transType);
             if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_BALANCE)) {
                 transResultObj = service.startGetBalance(transObj);
             } else if (!TextUtils.isEmpty(transType) && transType.equals(Constant.APMP_TRAN_SUPER_TRANSFER)) {

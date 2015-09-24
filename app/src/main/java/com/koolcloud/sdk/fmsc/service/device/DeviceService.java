@@ -20,6 +20,7 @@ import com.koolcloud.sdk.fmsc.service.IDevicesCallBack;
 import com.koolcloud.sdk.fmsc.service.IDevicesInterface;
 import com.koolcloud.sdk.fmsc.service.ITransactionCallBack;
 import com.koolcloud.sdk.fmsc.util.ApmpUtil;
+import com.koolcloud.sdk.fmsc.util.Logger;
 import com.koolcloud.sdk.fmsc.util.StringUtils;
 import com.koolyun.smartpos.sdk.message.parameter.EMVICManager;
 
@@ -77,25 +78,25 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate");
+        Logger.d("onCreate");
         super.onCreate();
         this.context = this;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind");
+        Logger.d("onBind");
         return devicesInterface;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
+        Logger.d("onStartCommand");
         return START_STICKY;
     }
 
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Logger.d("onDestroy");
         super.onDestroy();
     }
 
@@ -139,7 +140,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 mDevicesCallBack.onGetCardDataCallBack(jsonObject.toString());
             }
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -166,7 +167,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 }
             }
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -178,7 +179,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             jsonObject.put("process_code", Constant.PROCESS_CODE_21);
             mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -210,17 +211,17 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             mDevicePresenter.onStartTransaction(context, transJsonObj, mTransactionInteractor);
 
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
     @Override
     public void onReceiveICCardData(JSONObject icCardData) {
         try {
-            Log.w(TAG, "icCard data:" + icCardData.toString());
+            Logger.w("icCard data:" + icCardData.toString());
             mDevicesCallBack.onGetCardDataCallBack(icCardData.toString());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -236,10 +237,10 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 }
             }
 
-            Log.w(TAG, "IC_ERROR:" + transICData.toString());
+            Logger.w("IC_ERROR:" + transICData.toString());
             mDevicesCallBack.onSwipeCardErrorCallBack(transICData.toString());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -270,15 +271,15 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                 }
             }
         } catch (JSONException e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
     @Override
     public void onFinishTransaction(JSONObject jsonObject) {
-        Log.w(TAG, "trans result:" + jsonObject.toString());
+        Logger.w("trans result:" + jsonObject.toString());
         try {
             String orderId = jsonObject.optString("orderId");
             if ((jsonObject.isNull("orderId") || TextUtils.isEmpty(orderId)) && !TextUtils.isEmpty(mOrderId)) {
@@ -290,7 +291,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             cleanCacheParams();
             mTransactionCallBack.onTransactionCallBack(jsonObject.toString());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -301,7 +302,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
         try {
             mDevicesCallBack.onSwipeCardErrorCallBack(jsonObject.toString());
         } catch (Exception e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 
@@ -341,7 +342,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
                     mDevicePresenter.onStartReadICData(context, mBrhKeyIndex, transAmount);
                 }
             } catch (JSONException e) {
-                Log.w(TAG, e);
+                Logger.w(e.getMessage());
             }
         }
 
@@ -368,7 +369,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             try {
                 return super.onTransact(code, data, reply, flags);
             } catch (RuntimeException e) {
-                Log.w(TAG, "Unexpected remote exception", e);
+                Logger.w(e.getMessage());
                 throw e;
             }
         }
@@ -395,7 +396,7 @@ public class DeviceService extends BaseService implements IDeviceServiceView {
             transJsonObj.put("toAccount", mToAccount);
             transJsonObj.put("orderId", mOrderId);
         } catch (JSONException e) {
-            Log.w(TAG, e);
+            Logger.w(e.getMessage());
         }
     }
 

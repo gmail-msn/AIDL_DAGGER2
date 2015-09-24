@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.koolcloud.sdk.fmsc.domain.database.BankDB;
+import com.koolcloud.sdk.fmsc.util.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,7 +71,7 @@ public class DataBaseUtils {
         } else {
             outFileName = "/data/data/" + context.getPackageName() + "/databases/" + BankDB.DATABASE_NAME;
         }
-        Log.w("DataBaseUtils", "path:" + outFileName);
+        Logger.i("path:" + outFileName);
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
         //transfer bytes from the inputfile to the outputfile

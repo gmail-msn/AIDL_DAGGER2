@@ -23,6 +23,8 @@ package com.koolcloud.sdk.fmsc;
 import android.app.Application;
 import android.util.Log;
 
+import com.koolcloud.sdk.fmsc.util.Logger;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -34,14 +36,14 @@ public class AppModule {
     private App app;
 
     public AppModule(App app) {
-        Log.i("AppModule", "constructor AppModule");
+        Logger.i("constructor AppModule");
         this.app = app;
     }
 
     @Provides
     @Singleton
     public Application provideApplication() {
-        Log.i("AppModule", "provideApplication()");
+        Logger.i("provideApplication()");
         return app;
     }
 }
