@@ -77,7 +77,7 @@ public class PaymentParamsDB extends BaseSqlAdapter {
      * @param paymentInfos
      * @return: void
      */
-    public void insertPayment(List<PaymentInfo> paymentInfos) {
+    synchronized public void insertPayment(List<PaymentInfo> paymentInfos) {
     	
     	ArrayList<SQLEntity> sqlList = new ArrayList<SQLEntity>();
     	Cursor cursor = null;
@@ -126,6 +126,7 @@ public class PaymentParamsDB extends BaseSqlAdapter {
     		if (cursor != null) {
     			cursor.close();
     		}
+			closeDB();
     	}
     }
     
@@ -136,9 +137,9 @@ public class PaymentParamsDB extends BaseSqlAdapter {
     		excuteWriteAbleSql(sql);
     	} catch(Exception e) {
     		e.printStackTrace();
-    	}
-    	
-    	//closeDB();
+    	} finally {
+			closeDB();
+		}
     }
 
 	public Cursor getPayments() {
@@ -164,23 +165,32 @@ public class PaymentParamsDB extends BaseSqlAdapter {
     	return count;
     }
     
-    public PaymentInfo getPaymentByPaymentId(String paymentId) { 
-    	String sql = "select * from " + PAYMENT_PARAMS_TABLE_NAME + " where " + ACQUIRE_PAYMENT_ID + " = '" + paymentId + "'";
-    	PaymentInfo paymentInfo = null;
-    	Cursor cursor = getCursor(sql, null);
-    	if (cursor.getCount() > 0) {
-    		cursor.moveToNext();
-    		String paymentName = cursor.getString(cursor.getColumnIndex(ACQUIRE_PAYMENT_NAME));
-    		String brhKeyIndex = cursor.getString(cursor.getColumnIndex(ACQUIRE_BRH_KEY_INDEX));
-    		String prodtNo = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_NO));
-    		String prdtTitle = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_TITLE));
-    		String prdtDesc = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_DESC));
-    		String openBrh = cursor.getString(cursor.getColumnIndex(ACQUIRE_DEVICE_NUM_OF_MERCH));
-    		String openBrhName = cursor.getString(cursor.getColumnIndex(ACQUIRE_INSTITUTE_NAME));
-    		paymentInfo = new PaymentInfo(paymentId, paymentName, brhKeyIndex, prodtNo, prdtTitle, prdtDesc, openBrh, openBrhName);
-    	}
-    	
-    	cursor.close();
+    public PaymentInfo getPaymentByPaymentId(String paymentId) {
+		PaymentInfo paymentInfo = null;
+		Cursor cursor = null;
+		try {
+			String sql = "select * from " + PAYMENT_PARAMS_TABLE_NAME + " where " + ACQUIRE_PAYMENT_ID + " = '" + paymentId + "'";
+			paymentInfo = null;
+			cursor = getCursor(sql, null);
+			if (cursor.getCount() > 0) {
+                cursor.moveToNext();
+                String paymentName = cursor.getString(cursor.getColumnIndex(ACQUIRE_PAYMENT_NAME));
+                String brhKeyIndex = cursor.getString(cursor.getColumnIndex(ACQUIRE_BRH_KEY_INDEX));
+                String prodtNo = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_NO));
+                String prdtTitle = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_TITLE));
+                String prdtDesc = cursor.getString(cursor.getColumnIndex(ACQUIRE_PRODUCT_DESC));
+                String openBrh = cursor.getString(cursor.getColumnIndex(ACQUIRE_DEVICE_NUM_OF_MERCH));
+                String openBrhName = cursor.getString(cursor.getColumnIndex(ACQUIRE_INSTITUTE_NAME));
+                paymentInfo = new PaymentInfo(paymentId, paymentName, brhKeyIndex, prodtNo, prdtTitle, prdtDesc, openBrh, openBrhName);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			closeDB();
+		}
     	return paymentInfo;
     }
     
@@ -207,12 +217,13 @@ public class PaymentParamsDB extends BaseSqlAdapter {
     		}
     	} catch (Exception e) {
     		e.printStackTrace();
-    		if (cursor != null) {
-    			
-    			cursor.close();
-    		}
-    	}
-    	return paymentList;
+    	} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			closeDB();
+		}
+		return paymentList;
     }
     
     /**
