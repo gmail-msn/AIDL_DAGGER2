@@ -74,6 +74,11 @@ public class CardSwiper {
 	public void onDestroy() {
 		isPollCanceled = true;
 		MsrInterface.cancelPoll();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		MsrInterface.close();
 		if (null != waitDataLooper) {
 			waitDataLooper.quit();

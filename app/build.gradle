@@ -26,14 +26,28 @@ android {
         versionName "1.0"
     }*/
 
+    lintOptions {
+        abortOnError false
+    }
+
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'appstorekey'
+            keyPassword 'cooltool'
+            storeFile file('./app.ks')
+            storePassword 'cooltool'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-project.txt'
+            signingConfig signingConfigs.releaseConfig
         }
     }
 }
