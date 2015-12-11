@@ -98,6 +98,7 @@
     <orderEntry type="library" exported="" name="javax.annotation-10.0-b28" level="project" />
     <orderEntry type="library" exported="" name="dagger-2.0" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="analytics-5.6.1" level="project" />
     <orderEntry type="library" exported="" name="smartpos-sdk" level="project" />
     <orderEntry type="library" exported="" name="butterknife-6.1.0" level="project" />
   </component>

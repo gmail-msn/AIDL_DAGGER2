@@ -27,8 +27,7 @@
 -verbose
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
--keep public class * extends android.app.Fragment
-
+-keepattributes SourceFile,LineNumberTable
 #build.gradle config the jars(dependencies {compile fileTree(include: '*.jar', dir: 'libs')})
 #-libraryjars  libs/sqliteassethelper-2.0.1.jar
 #-libraryjars  libs/bcprov-jdk14-1.38.jar
@@ -45,6 +44,7 @@
 }
 
 -keep public class * extends android.app.Activity
+-keep public class * extends android.app.Fragment
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.LinearLayout
 -keep public class * extends android.app.Service
