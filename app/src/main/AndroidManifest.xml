@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.koolcloud.sdk.fmsc"
+    package="com.cloud.sdk.fcentral"
     android:versionCode="16"
     android:versionName="1.2.0_12102015030P">
 
@@ -55,7 +55,7 @@
         </activity>-->
 
         <receiver
-            android:name="com.koolcloud.sdk.fmsc.receiver.FMSCReceiver"
+            android:name="com.cloud.sdk.fmsc.receiver.FMSCReceiver"
             android:label="FMSCReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -64,7 +64,7 @@
         </receiver>
 
         <receiver
-            android:name="com.koolcloud.sdk.fmsc.receiver.AppBroadcastReceiver"
+            android:name="com.cloud.sdk.fmsc.receiver.AppBroadcastReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
@@ -78,7 +78,7 @@
 
         <!-- service -->
         <service
-            android:name="com.koolcloud.sdk.fmsc.service.device.DeviceService"
+            android:name="com.cloud.sdk.fmsc.service.device.DeviceService"
             android:exported="true"
             android:persistent="true"
             android:process=":remote">
@@ -92,22 +92,22 @@
             android:persistent="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.koolcloud.sdk.fmsc.service.ITransactionInterface" />
+                <action android:name="com.cloud.sdk.fmsc.service.ITransactionInterface" />
             </intent-filter>
         </service>
         <service
-            android:name="com.koolcloud.sdk.fmsc.service.apmp.FapmpService"
+            android:name="com.cloud.sdk.fmsc.service.apmp.FapmpService"
             android:exported="true"
             android:persistent="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.koolcloud.sdk.fmsc.service.IApmpInterface" />
+                <action android:name="com.cloud.sdk.fmsc.service.IApmpInterface" />
             </intent-filter>
         </service>
 
         <provider
-            android:name="com.koolcloud.sdk.fmsc.provider.PaymentProvider"
-            android:authorities="com.koolcloud.sdk.fmsc.provider"></provider>
+            android:name="com.cloud.sdk.fmsc.provider.PaymentProvider"
+            android:authorities="com.cloud.sdk.fmsc.provider"></provider>
     </application>
 
 </manifest>
